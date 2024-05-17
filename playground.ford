@@ -1,0 +1,14 @@
+contract Primitives;
+
+let myAddress = address("0x1E3");
+let x;
+
+let z = { a: 1 };
+
+def abc {
+
+    while x < 10 {
+
+    }
+}
+
