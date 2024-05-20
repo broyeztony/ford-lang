@@ -1,14 +1,9 @@
 contract Primitives;
 
 let myAddress = address("0x1E3");
-let x;
+let x = u8(1);
 
-let z = { a: 1 };
+def abc() {
 
-def abc {
-
-    while x < 10 {
-
-    }
 }
 
