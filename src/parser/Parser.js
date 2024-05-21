@@ -3,9 +3,11 @@ const { Tokenizer } = require('./Tokenizer')
 const Log = console.log.bind(global)
 
 class Parser {
+
   constructor () {
     this._string = ''
     this._tokenizer = new Tokenizer()
+    this._isStateVariable = true
   }
 
   parse (string) {
@@ -61,6 +63,7 @@ class Parser {
   }
 
   FunctionStatement () { //
+
     switch (this._lookahead.type) {
       case ';':
         return this.EmptyStatement()
@@ -138,6 +141,7 @@ class Parser {
    * ;
    */
   FunctionDeclaration () {
+    this._isStateVariable = false
     this._eat('def');
     const name = this.Identifier()
 
@@ -158,7 +162,7 @@ class Parser {
     if (params) {
       buffer.params = params
     }
-
+    this._isStateVariable = true
     return buffer;
   }
 
@@ -315,6 +319,7 @@ class Parser {
 
     return {
       type: 'VariableStatement',
+      stateVariable: this._isStateVariable,
       declarations
     }
   }

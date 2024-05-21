@@ -1,9 +1,9 @@
 contract Primitives;
 
 // let myAddress = address("0x1E3");
-// let x = u8(1);
+let x = u8(1);
 
 def lambda() {
-
+    let y = u16(512);
 }
 
