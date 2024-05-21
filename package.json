@@ -6,6 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "dependencies": {
+    "solc-typed-ast": "^18.1.6"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/broyeztony/ford.git"
