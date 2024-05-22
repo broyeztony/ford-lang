@@ -1,4 +1,4 @@
-Hello :wave_derpgoogly: 
+Hello! 🌞
 
 You start with 
 
