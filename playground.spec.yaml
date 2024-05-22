@@ -1,0 +1,22 @@
+
+# contract Primitives;
+
+# let myAddress = address("0x1E3");
+# let x = u8(1);
+
+# def lambda() {
+#     let y = u16(512);
+# }
+
+state:
+    - name: x
+      type: u8
+
+defs:
+    - name: lambda
+      params: []
+      returnType: null
+      stateMutability: nonpayable
+      visibility: public
+
+events: {}

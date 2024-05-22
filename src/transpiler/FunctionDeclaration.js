@@ -1,12 +1,28 @@
+const {VariableStatement} = require("./VariableStatement");
+const {VariableDeclarationStatement} = require("./VariableDeclarationStatement");
 
 function FunctionDeclaration(node) {
+
+  const blockStatements = node.body.body
+  const lnStatements  = blockStatements.length
+  const outputNodes = []
+  let outputNode
+  for (let i = 0 ; i < lnStatements; i++) {
+    const stmtNode = blockStatements[i]
+    switch (stmtNode.type) {
+      case 'VariableStatement':
+        outputNode = VariableDeclarationStatement(stmtNode)
+        outputNodes.push(outputNode)
+        break
+    }
+  }
 
   const fd = {
     body: {
       "id": currentId++,
       nodeType: 'Block',
       src: '0:0:0',
-      statements: []
+      statements: outputNodes
     },
     /* TODO: functionSelector: "dad0be61", */
     id: currentId++,
