@@ -1,6 +1,9 @@
 contract Playground;
 
 let x = u8(1);
+let y = i8(10);
+let yPrime = i8(-10);
+
 let aNumber = 1000;
 let str = "";
 let addr = address("0xFE07F44f09b1EFd64aA52Aa149CDe409502F27f2");

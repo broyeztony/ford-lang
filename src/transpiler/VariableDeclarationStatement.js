@@ -1,42 +1,23 @@
 
 const fordTypes2SolidityTypes = {
+  // unsigned integers
   'u8': { typeIdentifier: 't_uint8', typeString: 'uint8', kind: 'number' },
   'u16': { typeIdentifier: 't_uint16', typeString: 'uint16', kind: 'number' },
   'u32': { typeIdentifier: 't_uint32', typeString: 'uint32', kind: 'number' },
   'u64': { typeIdentifier: 't_uint64', typeString: 'uint64', kind: 'number' },
   'u128': { typeIdentifier: 't_uint128', typeString: 'uint128', kind: 'number' },
   'u256': { typeIdentifier: 't_uint256', typeString: 'uint256', kind: 'number' },
+  // signed integers
+  'i8': { typeIdentifier: 't_int8', typeString: 'int8', kind: 'number' },
+  'i16': { typeIdentifier: 't_int16', typeString: 'int16', kind: 'number' },
+  'i32': { typeIdentifier: 't_int32', typeString: 'int32', kind: 'number' },
+  'i64': { typeIdentifier: 't_int64', typeString: 'int64', kind: 'number' },
+  'i128': { typeIdentifier: 't_int128', typeString: 'int128', kind: 'number' },
+  'i256': { typeIdentifier: 't_int256', typeString: 'int256', kind: 'number' },
+  // solidity intrinsic types
   'address': { typeIdentifier: 't_address', typeString: 'address', kind: 'number' },
 }
 
-/*
-{
-  "type": "VariableStatement",
-  "stateVariable": false,
-  "declarations": [
-    {
-      "type": "VariableDeclaration",
-      "id": {
-        "type": "Identifier",
-        "name": "y"
-      },
-      "initializer": {
-        "type": "CallExpression",
-        "callee": {
-          "type": "Identifier",
-          "name": "u16"
-        },
-        "arguments": [
-          {
-            "type": "NumericLiteral",
-            "value": 512
-          }
-        ]
-      }
-    }
-  ]
-}
- */
 function VariableDeclarationStatement(node) {
 
   const declaration = node.declarations[0]
@@ -113,6 +94,11 @@ function VariableDeclarationStatement(node) {
         vds.initialValue.typeDescriptions.typeString = `int_const ${argument.value}`
         vds.initialValue.value = `${argument.value}`
         break
+      }
+      else if (['i8', 'i16', 'i32', 'i64', 'i128', 'i256'].includes(calleeName)) { // TODO: handle negative integers
+        vds.initialValue.typeDescriptions.typeIdentifier = `t_rational_${argument.value}_by_1`
+        vds.initialValue.typeDescriptions.typeString = `int_const ${argument.value}`
+        vds.initialValue.value = `${argument.value}`
       }
       else if (calleeName === 'address') { // type address
         vds.initialValue.typeDescriptions.typeIdentifier = `t_address`
