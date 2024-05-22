@@ -1,5 +1,4 @@
-const {VariableStatement} = require("./VariableStatement");
-const {VariableDeclarationStatement} = require("./VariableDeclarationStatement");
+const {VariableDeclaration} = require("./VariableDeclaration");
 
 function FunctionDeclaration(node) {
 
@@ -11,7 +10,7 @@ function FunctionDeclaration(node) {
     const stmtNode = blockStatements[i]
     switch (stmtNode.type) {
       case 'VariableStatement':
-        outputNode = VariableDeclarationStatement(stmtNode)
+        outputNode = VariableDeclaration(stmtNode, false)
         outputNodes.push(outputNode)
         break
     }
