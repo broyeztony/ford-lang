@@ -1,5 +1,5 @@
 const {FunctionDeclaration} = require("./FunctionDeclaration");
-const {VariableStatement} = require("./VariableStatement");
+const {VariableDeclaration} = require("./VariableDeclaration");
 
 global.currentId = 0
 global.currentScope = 0
@@ -58,7 +58,7 @@ class Transpiler {
           outputNodes.push(outputNode)
           break
         case 'VariableStatement':
-          outputNode = VariableStatement(node)
+          outputNode = VariableDeclaration(node, true)
           outputNodes.push(outputNode)
           break
       }
