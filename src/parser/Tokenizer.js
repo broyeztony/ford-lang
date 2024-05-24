@@ -27,6 +27,7 @@ const Spec = [
   [/^\bwhile\b/, 'while'],
   [/^\bdo\b/, 'do'],
   [/^\bfor\b/, 'for'],
+  [/^\bto\b/, 'to'],
   [/^\bdef\b/, 'def'],
   [/^\breturn\b/, 'return'],
   [/^\brecover\b/, 'recover'],

@@ -253,29 +253,21 @@ class Parser {
 
   /**
    * ForStatement
-   * : 'for' '(' OptStatementInit ';' OptExpression ';' OptExpression ')' Statement
+   * : 'for' OptStatementInit 'to' OptExpression Statement
    * ;
    */
   ForStatement(){
     this._eat('for')
-    this._eat('(')
 
-    const init = this._lookahead.type === ';' ? null : this.ForStatementInit()
-    this._eat(';')
-
-    const test = this._lookahead.type === ';' ? null : this.Expression()
-    this._eat(';')
-
-    const update = this._lookahead.type === ')' ? null : this.Expression()
-    this._eat(')')
-
+    const init = this.ForStatementInit()
+    this._eat('to')
+    const test = this.Expression()
     const body = this.FunctionStatement()
 
     return {
       type: 'ForStatement',
       init,
       test,
-      update,
       body,
     }
   }
@@ -284,7 +276,8 @@ class Parser {
     if(this._lookahead.type === 'let') {
       return this.VariableStatementInit()
     }
-    return this.Expression()
+    throw new SyntaxError('Invalid initializer for iteration construct.')
+    // return this.Expression()
   }
 
   /**

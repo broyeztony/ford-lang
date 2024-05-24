@@ -1,0 +1,17 @@
+state:
+    - name: x
+      type: u8
+    - name: addr
+      type: address
+
+defs:
+    - name: addToX
+      parameters:
+        y: u8
+      returnType: u8
+      visibility:
+          - public
+      stateMutability:
+          - view
+
+events: {}
