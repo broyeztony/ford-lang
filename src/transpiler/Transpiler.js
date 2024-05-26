@@ -3,6 +3,7 @@ const {VariableDeclaration} = require("./VariableDeclaration");
 
 global.currentId = 0
 global.currentScope = 0
+global.source = '0:0:0'
 
 class Transpiler {
   constructor (inputAst) {

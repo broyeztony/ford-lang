@@ -1,3 +1,4 @@
+const {GetId} = require("./utils");
 
 const fordTypes2SolidityTypes = {
   // unsigned integers
@@ -25,7 +26,7 @@ function VariableDeclaration(node, isStateVariable) {
 
   const variableAttributes = {
     constant: false,
-    id: currentId++,
+    id: GetId(),
     mutability: 'mutable',
     name: declaration.id.name,
     nameLocation: '0:0:0',
@@ -39,7 +40,7 @@ function VariableDeclaration(node, isStateVariable) {
       typeString: undefined // resolved below
     },
     typeName: {
-      id: currentId++,
+      id: GetId(),
       name: undefined, // resolved below
       nodeType: 'ElementaryTypeName',
       src: '0:0:0',
@@ -54,12 +55,12 @@ function VariableDeclaration(node, isStateVariable) {
   const variableBase = {
     nodeType: isStateVariable ? 'VariableDeclaration' : 'VariableDeclarationStatement',
     src: '0:0:0',
-    id: currentId++,
+    id: GetId(),
   }
 
   const variableValue = {
     hexValue: '',
-    id: currentId++,
+    id: GetId(),
     isConstant: false,
     isLValue: false,
     isPure: true,

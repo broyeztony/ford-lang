@@ -1,4 +1,6 @@
 const {VariableDeclaration} = require("./VariableDeclaration");
+const {ForStatement} = require("./ForStatement");
+const {GetId} = require("./utils");
 
 function FunctionDeclaration(node) {
 
@@ -13,18 +15,22 @@ function FunctionDeclaration(node) {
         outputNode = VariableDeclaration(stmtNode, false)
         outputNodes.push(outputNode)
         break
+      case 'ForStatement':
+        outputNode = ForStatement(stmtNode)
+        outputNodes.push(outputNode)
+        break
     }
   }
 
   const fd = {
     body: {
-      "id": currentId++,
+      id: GetId(),
       nodeType: 'Block',
       src: '0:0:0',
       statements: outputNodes
     },
     /* TODO: functionSelector: "dad0be61", */
-    id: currentId++,
+    id: GetId(),
     implemented: true,
     kind: "function",
     modifiers: [],
@@ -32,13 +38,13 @@ function FunctionDeclaration(node) {
     nameLocation: '0:0:0',
     nodeType: 'FunctionDefinition',
     parameters: {
-      id: currentId++,
+      id: GetId(),
       nodeType: 'ParameterList',
       parameters: [],
       src: '0:0:0'
     },
     returnParameters: {
-      id: currentId++,
+      id: GetId(),
       nodeType: 'ParameterList',
       parameters: [],
       src: '0:0:0'
