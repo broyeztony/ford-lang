@@ -17,12 +17,17 @@ def lambda {
     let a = u16(512);
     let b = u32(751749403);
     let c = 3; // no explicit type => default to uint256
+
+    for let k = 0 to 5 {
+        // do something
+    }
 }
 ```
 
 You end up with 
 
 ```solidity
+/// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
 
 contract Playground {
@@ -37,6 +42,7 @@ contract Playground {
         uint16 a = 512;
         uint32 b = 751749403;
         uint256 c = 3;
+        for (uint256 k = 0; k < 5; k++) {}
     }
 }
 ```
