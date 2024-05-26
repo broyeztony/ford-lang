@@ -8,7 +8,7 @@ contract Playground;
 let x = u8(1);
 let y = i8(10);
 
-let aNumber = 1000;
+let aNumber = 1000; // no explicit type => default to uint256
 let str = "";
 let addr = address("0xFE07F44f09b1EFd64aA52Aa149CDe409502F27f2");
 let boole = true;
@@ -16,7 +16,6 @@ let boole = true;
 def lambda {
     let a = u16(512);
     let b = u32(751749403);
-    let c = 3; // no explicit type => default to uint256
 
     for let k = 0 to 5 {
         // do something
@@ -41,7 +40,6 @@ contract Playground {
     function lambda() public {
         uint16 a = 512;
         uint32 b = 751749403;
-        uint256 c = 3;
         for (uint256 k = 0; k < 5; k++) {}
     }
 }
