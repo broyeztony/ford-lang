@@ -19,6 +19,34 @@ const fordTypes2SolidityTypes = {
   'address': { typeIdentifier: 't_address', typeString: 'address', kind: 'number' },
 }
 
+/*
+{
+  "type": "VariableStatement",
+  "stateVariable": true,
+  "declarations": [
+    {
+      "type": "VariableDeclaration",
+      "id": {
+        "type": "Identifier",
+        "name": "addr"
+      },
+      "initializer": {
+        "type": "CallExpression",
+        "callee": {
+          "type": "Identifier",
+          "name": "address"
+        },
+        "arguments": [
+          {
+            "type": "StringLiteral",
+            "value": "0x0"
+          }
+        ]
+      }
+    }
+  ]
+},
+ */
 function VariableDeclaration(node, isStateVariable) {
 
   const declaration = node.declarations[0]
@@ -52,7 +80,7 @@ function VariableDeclaration(node, isStateVariable) {
     visibility: isStateVariable ? 'public' : 'internal'
   }
 
-  const variableBase = {
+  const variableBase = { // inside a function
     nodeType: isStateVariable ? 'VariableDeclaration' : 'VariableDeclarationStatement',
     src: '0:0:0',
     id: GetId(),

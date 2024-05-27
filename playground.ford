@@ -1,19 +1,5 @@
-contract Playground;
+contract SampleContract;
 
-let x = u8(1);
-let y = i8(10);
-
-let aNumber = 1000; // no explicit type => default to uint256
-let str = "";
-let addr = address("0xFE07F44f09b1EFd64aA52Aa149CDe409502F27f2");
-let boole = true;
-
-def lambda {
-    let a = u16(512);
-    let b = u32(751749403);
-
-    for let k = 0 to 5 {
-        // do something
-    }
-}
-
+let s = "hello";
+let b = true;
+let addr = address();
