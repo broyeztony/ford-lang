@@ -19,16 +19,24 @@ const fordTypes2SolidityTypes = {
   'address': { typeIdentifier: 't_address', typeString: 'address', kind: 'number' },
 }
 
-function VariableDeclaration(node, isStateVariable) {
+function lookupMetadata(varName, metadata) {
+  return metadata?.state.filter(_ => _.name === varName)
+}
+
+function VariableDeclaration(node, isStateVariable, metadata) {
 
   const declaration = node.declarations[0]
   const initializer = declaration.initializer
+
+  const varName = declaration.id.name
+  const varMeta = lookupMetadata(varName, metadata)
+  // console.log('@VariableDeclaration name', varName, 'varMeta', varMeta)
 
   const variableAttributes = {
     constant: false,
     id: GetId(),
     mutability: 'mutable',
-    name: declaration.id.name,
+    name: varName,
     nameLocation: '0:0:0',
     nodeType: 'VariableDeclaration',
     scope: currentScope++,
@@ -114,6 +122,9 @@ function VariableDeclaration(node, isStateVariable) {
       target.typeDescriptions.typeString = `int_const ${argument.value}`
       target.value = `${argument.value}`
     } else if (calleeName === 'address') { // type address
+
+      console.log('@node', JSON.stringify(node, null, 2))
+
       target.typeDescriptions.typeIdentifier = `t_address`
       target.typeDescriptions.typeString = `address`
       target.value = `${argument.value}`

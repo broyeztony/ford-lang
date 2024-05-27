@@ -6,6 +6,7 @@ let y = i8(10);
 let aNumber = 1000; // no explicit type => default to uint256
 let str = "";
 let addr = address("0xFE07F44f09b1EFd64aA52Aa149CDe409502F27f2");
+let owner = address();
 let boole = true;
 
 def lambda {
@@ -17,3 +18,6 @@ def lambda {
     }
 }
 
+def someFuncWithManyInputs(x, y, z, a, b, c) {
+    return 1;
+}

@@ -209,17 +209,15 @@ class Parser {
 
   /**
    * IterationStatement
-   * : WhileStatement
-   * | DoWhileStatement
    * | ForStatement
    * ;
    */
   IterationStatement () {
     switch(this._lookahead.type) {
-      case 'while':
-        return this.WhileStatement();
-      case 'do':
-        return this.DoWhileStatement();
+      // case 'while':
+      //   return this.WhileStatement();
+      // case 'do':
+      //   return this.DoWhileStatement();
       case 'for':
         return this.ForStatement();
     }
@@ -274,7 +272,8 @@ class Parser {
 
   ForStatementInit() {
     if(this._lookahead.type === 'let') {
-      return this.VariableStatementInit()
+      const variableStatementInit = this.VariableStatementInit()
+      return variableStatementInit
     }
     throw new SyntaxError('Invalid initializer for iteration construct.')
     // return this.Expression()

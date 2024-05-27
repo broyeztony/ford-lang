@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "solc-typed-ast": "^18.1.6"
+    "solc-typed-ast": "^18.1.6",
+    "yaml": "^2.4.2"
   },
   "repository": {
     "type": "git",
