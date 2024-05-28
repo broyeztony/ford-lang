@@ -38,10 +38,10 @@ function VariableDeclaration(node) {
     id: GetId(),
     mutability: 'mutable',
     name: inputDeclaration.id.name,
-    nameLocation: '0:0:0',
+    nameLocation: source,
     nodeType: 'VariableDeclaration',
     scope: currentScope++,
-    src: '0:0:0',
+    src: source,
     stateVariable: node.stateVariable,
     storageLocation: 'default',
     typeDescriptions: {
@@ -52,7 +52,7 @@ function VariableDeclaration(node) {
       id: GetId(),
       name: undefined, // resolved below
       nodeType: 'ElementaryTypeName',
-      src: '0:0:0',
+      src: source,
       typeDescriptions: {
         typeIdentifier: undefined, // resolved below
         typeString: undefined // resolved below
