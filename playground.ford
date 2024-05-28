@@ -4,7 +4,7 @@ let s = "hello";
 let b = true;
 let addr = address();
 
-def lambda () {
+def lambda {
 
     let a = u8(3);
     let b = 10;

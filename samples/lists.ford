@@ -5,7 +5,7 @@ def doList {
 	let myList = listU8(1, 1, 2, 3, 5);
 
     let itemAtIndex3 = getItem(myList, 4); // i.e `5`
-	append(myList, u8(8)); // add u8(8) at the end of the list
+	append(myList, u8(58)); // add a uint8 at the end of the list
 	remove(myList, 0); // removes u8(1) at the beginning of the list
 	len(myList); // returns the size of the list, i.e `5`
 
