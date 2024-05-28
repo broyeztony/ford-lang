@@ -150,7 +150,6 @@ function StateVariableDeclaration (node) {
     }
 
     if (initializer.type === 'CallExpression') {
-
       if (initializer.arguments.length > 0) {
         const arg = initializer.arguments[0]
         const calleeName = initializer.callee.name
@@ -176,30 +175,11 @@ function StateVariableDeclaration (node) {
     } else if (initializer.type === 'ObjectLiteral') {
       throw new Error('ERROR: Not Implemented')
     } else if (initializer.type === 'NumericLiteral') {
-
-      variableValue.kind = 'number'
-      variableValue.typeDescriptions.typeIdentifier = `t_rational_${initializer.value}_by_1`
-      variableValue.typeDescriptions.typeString = `int_const ${initializer.value}`
-      variableValue.value = `${initializer.value}`
-
-      variable.value = variableValue
-
+      variable.value = NumericLiteral(variableValue, initializer)
     } else if (initializer.type === 'StringLiteral') {
-
-      variableValue.kind = 'string'
-      variableValue.typeDescriptions.typeIdentifier = `t_stringliteral`
-      variableValue.typeDescriptions.typeString = `literal_string "${initializer.value}"`
-      variableValue.value = `${initializer.value}`
-
-      variable.value = variableValue
+      variable.value = StringLiteral(variableValue, initializer)
     } else if (initializer.type === 'BooleanLiteral') {
-
-      variableValue.kind = 'bool'
-      variableValue.typeDescriptions.typeIdentifier = `t_bool`
-      variableValue.typeDescriptions.typeString = 'bool'
-      variableValue.value = `${initializer.value}`
-
-      variable.value = variableValue
+      variable.value = BooleanLiteral(variableValue, initializer)
     } else {
       throw new Error('ERROR: Not Implemented')
     }
@@ -207,6 +187,33 @@ function StateVariableDeclaration (node) {
 
   console.log('@ variable', JSON.stringify(variable, null, 2))
   return variable
+}
+
+function NumericLiteral(variableValue, initializer) {
+
+  variableValue.kind = 'number'
+  variableValue.typeDescriptions.typeIdentifier = `t_rational_${initializer.value}_by_1`
+  variableValue.typeDescriptions.typeString = `int_const ${initializer.value}`
+  variableValue.value = `${initializer.value}`
+  return variableValue
+}
+
+function StringLiteral(variableValue, initializer) {
+
+  variableValue.kind = 'string'
+  variableValue.typeDescriptions.typeIdentifier = `t_stringliteral`
+  variableValue.typeDescriptions.typeString = `literal_string "${initializer.value}"`
+  variableValue.value = `${initializer.value}`
+  return variableValue
+}
+
+function BooleanLiteral(variableValue, initializer) {
+
+  variableValue.kind = 'bool'
+  variableValue.typeDescriptions.typeIdentifier = `t_bool`
+  variableValue.typeDescriptions.typeString = 'bool'
+  variableValue.value = `${initializer.value}`
+  return variableValue
 }
 
 module.exports = {
