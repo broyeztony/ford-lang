@@ -1,4 +1,4 @@
-state:
+state: {}
 
 
 defs:
@@ -9,6 +9,7 @@ defs:
       - name: y
         type: u8
     returnType: u8
+    # view, pure, nonpayable, payable
     stateMutability: payable
     visibility: external
 
