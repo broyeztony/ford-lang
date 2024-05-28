@@ -127,7 +127,6 @@ function StateVariableDeclaration (node) {
   }
 
   variable = {...baseVariable }
-  // resolving value
 
   // state variable with initial value
   if (initializer) {
@@ -185,7 +184,6 @@ function StateVariableDeclaration (node) {
     }
   }
 
-  console.log('@ variable', JSON.stringify(variable, null, 2))
   return variable
 }
 
