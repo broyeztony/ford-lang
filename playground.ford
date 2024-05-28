@@ -1,13 +1,16 @@
 contract SampleContract;
 
+let x = 1;
 let s = "hello";
 let b = true;
-let addr = address();
+
+let y = u16(10000);
+let w = address();
 
 def lambda {
 
-    let a = u8(3);
-    let b = 10;
+    let x = address("0x0");
+    let b = 3;
 
     for let k = 0 to b {
 

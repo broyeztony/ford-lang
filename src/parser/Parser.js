@@ -107,6 +107,8 @@ class Parser {
         return this.VariableStatement()
       case 'def':
         return this.FunctionDeclaration();
+      default:
+        throw new Error(`Invalid token: ${this._lookahead}, expected: one of 'let', 'def'`)
     }
   }
 
