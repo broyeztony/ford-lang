@@ -11,14 +11,14 @@ class Transpiler {
   constructor (inputAst, metadata) {
     this.inputAst = inputAst;
     this.metadata = metadata;
-    this.outputAst = { data: { sources: { 'contract.sol': { ast: { nodes: [] }, id: currentId++ } } } }
+    this.outputAst = { data: { sources: { 'playground.sol': { ast: { nodes: [] }, id: currentId++ } } } }
   }
   transpile() {
     this.fillHeader()
     this.fillPragma()
     this.transpileContract()
 
-    this.outputAst.data.sources['contract.sol'].ast.exportedSymbols[this.inputAst['name']].push(currentId)
+    this.outputAst.data.sources['playground.sol'].ast.exportedSymbols[this.inputAst['name']].push(currentId)
 
     return this.outputAst
   }
@@ -46,7 +46,7 @@ class Transpiler {
       usedEvents: []
     }
 
-    this.outputAst.data.sources['contract.sol'].ast.nodes.push(contract)
+    this.outputAst.data.sources['playground.sol'].ast.nodes.push(contract)
   }
 
   transpileContractNodes(){
@@ -80,12 +80,12 @@ class Transpiler {
     },
     "id": 7,
      */
-    this.outputAst.data.sources['contract.sol'].ast.absolutePath = 'contract.sol'
-    this.outputAst.data.sources['contract.sol'].ast.license = 'MIT'
-    this.outputAst.data.sources['contract.sol'].ast.nodeType = 'SourceUnit'
-    this.outputAst.data.sources['contract.sol'].ast.src = '0:0:0'
-    this.outputAst.data.sources['contract.sol'].ast.exportedSymbols = {}
-    this.outputAst.data.sources['contract.sol'].ast.exportedSymbols[this.inputAst['name']] = []
+    this.outputAst.data.sources['playground.sol'].ast.absolutePath = 'playground.sol'
+    this.outputAst.data.sources['playground.sol'].ast.license = 'MIT'
+    this.outputAst.data.sources['playground.sol'].ast.nodeType = 'SourceUnit'
+    this.outputAst.data.sources['playground.sol'].ast.src = '0:0:0'
+    this.outputAst.data.sources['playground.sol'].ast.exportedSymbols = {}
+    this.outputAst.data.sources['playground.sol'].ast.exportedSymbols[this.inputAst['name']] = []
   }
 
   fillPragma() {
@@ -95,7 +95,7 @@ class Transpiler {
       nodeType: 'PragmaDirective',
       src: '0:0:0'
     }
-    this.outputAst.data.sources['contract.sol'].ast.nodes.push(pragma)
+    this.outputAst.data.sources['playground.sol'].ast.nodes.push(pragma)
   }
 }
 

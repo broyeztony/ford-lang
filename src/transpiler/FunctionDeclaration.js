@@ -54,9 +54,9 @@ function FunctionDeclaration(node, metadata) {
     },
     scope: currentScope++,
     src: '0:0:0',
-    stateMutability: stateMutability, /* TODO: handle stateMutability */
+    stateMutability: stateMutability || 'nonpayable',
     virtual: false,
-    visibility: visibility /* TODO: handle visibility */
+    visibility: visibility || 'public'
   }
 
   return fd;

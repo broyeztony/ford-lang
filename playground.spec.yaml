@@ -1,13 +1,9 @@
-state: {}
-events: {}
-
 defs:
   - name: lambda
+    # nonpayable, view, pure , payable
     stateMutability: pure
-    visibility: external
+    # public, internal, external, private
+    # visibility: external
     # params: []
     # returnType: null
-    # view, pure, nonpayable, payable
-
-
 

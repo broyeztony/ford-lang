@@ -31,5 +31,4 @@ def doList {
 	*/
 	let found = contains(myList, u8(2)); // false
 
-
 }
