@@ -1,5 +1,5 @@
 state: {}
-
+events: {}
 
 defs:
   - name: lambda
@@ -13,4 +13,4 @@ defs:
     stateMutability: payable
     visibility: external
 
-events: {}
+

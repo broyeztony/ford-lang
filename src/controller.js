@@ -7,7 +7,7 @@ const Controller = (programFile) => {
   const f = fs.readFileSync(programFile).toString()
   const parser = new Parser()
   const inputAst = parser.parse(f);
-  console.log(JSON.stringify(inputAst, null, 2))
+  // console.log(JSON.stringify(inputAst, null, 2))
 
   const transpiler = new Transpiler(inputAst)
   const outputAst = transpiler.transpile()
