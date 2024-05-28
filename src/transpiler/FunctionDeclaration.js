@@ -12,7 +12,7 @@ function FunctionDeclaration(node) {
     const stmtNode = blockStatements[i]
     switch (stmtNode.type) {
       case 'VariableStatement':
-        outputNode = VariableDeclaration(stmtNode, false)
+        outputNode = VariableDeclaration(stmtNode)
         outputNodes.push(outputNode)
         break
       case 'ForStatement':
