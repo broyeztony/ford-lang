@@ -8,8 +8,9 @@ global.currentScope = 0
 global.source = '0:0:0'
 
 class Transpiler {
-  constructor (inputAst) {
+  constructor (inputAst, metadata) {
     this.inputAst = inputAst;
+    this.metadata = metadata;
     this.outputAst = { data: { sources: { 'contract.sol': { ast: { nodes: [] }, id: currentId++ } } } }
   }
   transpile() {
@@ -57,11 +58,11 @@ class Transpiler {
 
       switch (node.type) {
         case 'FunctionDeclaration':
-          outputNode = FunctionDeclaration(node)
+          outputNode = FunctionDeclaration(node, this.metadata)
           outputNodes.push(outputNode)
           break
         case 'VariableStatement':
-          outputNode = StateVariableDeclaration(node)
+          outputNode = StateVariableDeclaration(node, this.metadata)
           outputNodes.push(outputNode)
           break
       }

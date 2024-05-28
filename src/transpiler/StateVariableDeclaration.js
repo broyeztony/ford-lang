@@ -28,7 +28,7 @@ const {GetId, fordTypes2SolidityTypes} = require("./utils");
   ]
 },
  */
-function StateVariableDeclaration (node) {
+function StateVariableDeclaration (node, metadata) {
 
   const declaration = node.declarations[0]
   const initializer = declaration.initializer

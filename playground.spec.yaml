@@ -3,14 +3,11 @@ events: {}
 
 defs:
   - name: lambda
-    params:
-      - name: x
-        type: u8
-      - name: y
-        type: u8
-    returnType: u8
-    # view, pure, nonpayable, payable
-    stateMutability: payable
+    stateMutability: pure
     visibility: external
+    # params: []
+    # returnType: null
+    # view, pure, nonpayable, payable
+
 
 
