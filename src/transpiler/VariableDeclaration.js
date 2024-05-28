@@ -30,14 +30,14 @@ const {GetId, fordTypes2SolidityTypes} = require("./utils");
  */
 function VariableDeclaration(node) {
 
-  const declaration = node.declarations[0]
-  const initializer = declaration.initializer
+  const inputDeclaration = node.declarations[0]
+  const initializer = inputDeclaration.initializer
 
   const variableAttributes = {
     constant: false,
     id: GetId(),
     mutability: 'mutable',
-    name: declaration.id.name,
+    name: inputDeclaration.id.name,
     nameLocation: '0:0:0',
     nodeType: 'VariableDeclaration',
     scope: currentScope++,
