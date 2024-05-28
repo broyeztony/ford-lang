@@ -98,27 +98,17 @@ class Parser {
    *  | ReturnStatement
    */
   Statement () { //
+    if (this._lookahead == null) {
+      throw new Error('Contract can not be empty.')
+    }
+
     switch (this._lookahead.type) {
-      //case ';':
-        //return this.EmptyStatement()
-      // case 'if':
-        // return this.IfStatement()
-      // case '{':
-      //   return this.BlockStatement()
       case 'let':
         return this.VariableStatement()
       case 'def':
         return this.FunctionDeclaration();
-      // case 'return':
-      //   return this.ReturnStatement();
-      // case 'recover':
-      //   return this.RecoverStatement();
-      // case 'while':
-      // case 'do':
-      // case 'for':
-      //   return this.IterationStatement()
       default:
-        return this.ExpressionStatement()
+        throw new Error(`Invalid token: ${this._lookahead}, expected: one of 'let', 'def'`)
     }
   }
 

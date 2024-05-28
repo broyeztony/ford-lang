@@ -42,7 +42,7 @@ function ForStatement(node) {
   const loopIdentifier = declaration.id.name
   const initializerValue = initializer.value
 
-  if (node.test.type !== 'NumericLiteral') {
+  if (!(node.test.type === 'NumericLiteral' || node.test.type === 'Identifier')) {
     throw new SyntaxError('The node is not a valid ForStatement.')
   }
   const testValue = node.test.value
@@ -51,9 +51,9 @@ function ForStatement(node) {
   const forStmt = {
     id: GetId(),
     body: LoopBody(node),
-    condition: Condition(node),
-    initializationExpression: InitializationExpression(node),
-    loopExpression: LoopExpression(node),
+    condition: Condition(node), // i < expression
+    initializationExpression: InitializationExpression(node), // let i = 0
+    loopExpression: LoopExpression(node), // i++
     isSimpleCounterLoop : true,
     nodeType : 'ForStatement',
     src: source,
@@ -123,7 +123,6 @@ function InitialValue(node) {
   }
 }
 
-
 function Condition(node) {
 
   const condition = {
@@ -167,24 +166,54 @@ function LeftExpression(node) {
   }
 }
 
+/*
+{
+  "type": "NumericLiteral",
+  "value": 10
+}
+or
+{
+  "type": "Identifier",
+  "name": "n"
+}
+*/
 function RightExpression(node) {
 
-  return {
+  const rhs = {
     id : GetId(),
-    hexValue : '',
-    isConstant : false,
-    isLValue : false,
-    isPure : true,
-    kind : 'number',
-    lValueRequested : false,
-    nodeType : 'Literal',
     src : source,
-    typeDescriptions: {
-      typeIdentifier : `t_rational_${node.test.value}_by_1`,
-      typeString : `int_const ${node.test.value}`
-    },
-    value : `${node.test.value}`
   }
+
+  switch (node.test.type) {
+    case 'NumericLiteral':
+      rhs.hexValue = ''
+      rhs.isConstant = false
+      rhs.isLValue = false
+      rhs.isPure = true
+      rhs.kind = 'number'
+      rhs.lValueRequested = false
+      rhs.nodeType = 'Literal'
+      rhs.typeDescriptions = {
+        typeIdentifier: `t_rational_${node.test.value}_by_1`,
+        typeString: `int_const ${node.test.value}`
+      }
+      rhs.value = `${node.test.value}`
+      break
+    case 'Identifier':
+        rhs.name = node.test.name
+        rhs.nodeType = 'Identifier'
+        rhs.overloadedDeclarations = []
+        rhs.referencedDeclaration = 0
+        rhs.typeDescriptions = {
+          typeIdentifier: 't_uint256',
+          typeString: 'uint256'
+        }
+      break
+    default:
+      throw new Error(`Invalid Right-Hand Side for For statement. Expected 'NumericLiteral' or 'Identifer'. Found: '${node.test.type}'`)
+  }
+
+  return rhs
 }
 
 function LoopExpression(node) {

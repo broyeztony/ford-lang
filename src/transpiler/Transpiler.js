@@ -1,5 +1,7 @@
 const {FunctionDeclaration} = require("./FunctionDeclaration");
 const {VariableDeclaration} = require("./VariableDeclaration");
+const {GetId} = require("./utils");
+const {StateVariableDeclaration} = require("./StateVariableDeclaration");
 
 global.currentId = 0
 global.currentScope = 0
@@ -29,7 +31,7 @@ class Transpiler {
       contractDependencies: [],
       contractKind: 'contract',
       fullyImplemented: true,
-      id: currentId++,
+      id: GetId(),
       linearizedBaseContracts: [
         // TODO: fill me
       ],
@@ -59,7 +61,7 @@ class Transpiler {
           outputNodes.push(outputNode)
           break
         case 'VariableStatement':
-          outputNode = VariableDeclaration(node, true)
+          outputNode = StateVariableDeclaration(node)
           outputNodes.push(outputNode)
           break
       }
@@ -87,7 +89,7 @@ class Transpiler {
 
   fillPragma() {
     const pragma = {
-      id: currentId++,
+      id: GetId(),
       literals: ["solidity", "^", "0.8", ".24"],
       nodeType: 'PragmaDirective',
       src: '0:0:0'

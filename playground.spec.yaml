@@ -1,32 +1,15 @@
-#contract Playground;
-#
-#let x = u8(1);
-#let y = i8(10);
-#
-#// TODO: handle negative numbers for integer types
-#// let yPrime = i8(-10);
-#
-#let aNumber = 1000;
-#let str = "";
-#let addr = address("0xFE07F44f09b1EFd64aA52Aa149CDe409502F27f2");
-#let boole = true;
-#
-#def lambda {
-#  let a = u16(512);
-#  let b = u32(751749403);
-#  let c = 3; // no explicit type => default to uint256
-#}
-
-
 state:
-  - name: x
-    type: u8
+
 
 defs:
   - name: lambda
-    params: []
-    returnType: null
-    stateMutability: nonpayable
-    visibility: public
+    params:
+      - name: x
+        type: u8
+      - name: y
+        type: u8
+    returnType: u8
+    stateMutability: payable
+    visibility: external
 
 events: {}
