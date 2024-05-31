@@ -101,11 +101,11 @@ function VariableDeclaration(node) {
 
       // no explicit type so we default to uint256
       let declaration = variable.declarations[0]
-      declaration.typeDescriptions.typeIdentifier = 't_uint256'
-      declaration.typeDescriptions.typeString = 'uint256'
-      declaration.typeName.name = 'uint256'
-      declaration.typeName.typeDescriptions.typeIdentifier = 't_uint256'
-      declaration.typeName.typeDescriptions.typeString = 'uint256'
+      declaration.typeDescriptions.typeIdentifier = 't_int256'
+      declaration.typeDescriptions.typeString = 'int256'
+      declaration.typeName.name = 'int256'
+      declaration.typeName.typeDescriptions.typeIdentifier = 't_int256'
+      declaration.typeName.typeDescriptions.typeString = 'int256'
 
       delete variable.initialValue.kind
       delete variable.initialValue.value

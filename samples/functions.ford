@@ -1,8 +1,16 @@
 contract View;
 
-let x       = u8(1);
-let addr    = address("0xCA35b7d915458EF540aDe6068dFe2F44E8fa733c");
+let x    = u8(1);
+let y    = wei(100000000000);
+let addr = address("0xCA35b7d915458EF540aDe6068dFe2F44E8fa733c");
 
-def addToX {
-    return x;
+def addToX (y, z) {
+    x += y * z;
 }
+
+def addToY (x, z) {
+    y += x * z;
+}
+
+
+

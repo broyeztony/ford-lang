@@ -12,4 +12,6 @@ let owner = address();
 def lambda {
 
     let x = i16(-100);
+    let y = -1;
+
 }
