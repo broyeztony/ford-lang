@@ -1,7 +1,8 @@
+- handle negative integers
 - automatically add `receive` and `fallback` function to the contract
-- add yaml specification companion file (and automatically update it on code changes)
 - build a playground UI website
 - remove `while` and `do while` iteration contructs
 - handle mappings
 - handle lists
+- handle events
 - provide syntactic sugar for list's searchs, removals, insertions

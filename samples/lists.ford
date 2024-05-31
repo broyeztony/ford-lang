@@ -21,7 +21,7 @@ def doList {
 
 	/* Introducing implicitly expanded utility functions. The `contains` function will be expanded to
 	let doesListContainElement = false;
-	let needle = u8(4);
+	let needle = u8(8);
     for let i = 0 to len(myList) {
         if getItem(myList, i) == needle {
             doesListContainElement = true;
@@ -29,6 +29,6 @@ def doList {
         }
     }
 	*/
-	let found = contains(myList, u8(2)); // false
+	let found = contains(myList, u8(8)); // false
 
 }
