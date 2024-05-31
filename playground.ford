@@ -1,18 +1,18 @@
-contract SampleContract;
+contract Playground;
 
-let x = 1;
-let s = "hello";
+// state variables
+let y = u8(2);
+let z = u32(2000000);
 let b = true;
-
-let y = u16(10000);
-let w = address();
+let s = "hello Ford!";
+let addr = address("0xCA35b7d915458EF540aDe6068dFe2F44E8fa733c");
+let owner = address();
 
 def lambda {
 
-    let x = address("0x0");
-    let b = 3;
-
-    for let k = 0 to b {
+    // internal variable
+    let k = 100;
+    for let i = 0 to k {
 
     }
 }

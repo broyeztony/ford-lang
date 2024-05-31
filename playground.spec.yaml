@@ -1,16 +1,9 @@
-state: {}
-
-
 defs:
   - name: lambda
-    params:
-      - name: x
-        type: u8
-      - name: y
-        type: u8
-    returnType: u8
-    # view, pure, nonpayable, payable
-    stateMutability: payable
-    visibility: external
+    # nonpayable, view, pure , payable
+    stateMutability: pure
+    # public, internal, external, private
+    # visibility: external
+    # params: []
+    # returnType: null
 
-events: {}

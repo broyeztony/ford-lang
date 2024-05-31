@@ -2,7 +2,7 @@ const {VariableDeclaration} = require("./VariableDeclaration");
 const {ForStatement} = require("./ForStatement");
 const {GetId} = require("./utils");
 
-function FunctionDeclaration(node) {
+function FunctionDeclaration(node, metadata) {
 
   const blockStatements = node.body.body
   const lnStatements  = blockStatements.length
@@ -12,7 +12,7 @@ function FunctionDeclaration(node) {
     const stmtNode = blockStatements[i]
     switch (stmtNode.type) {
       case 'VariableStatement':
-        outputNode = VariableDeclaration(stmtNode, false)
+        outputNode = VariableDeclaration(stmtNode)
         outputNodes.push(outputNode)
         break
       case 'ForStatement':
@@ -21,6 +21,9 @@ function FunctionDeclaration(node) {
         break
     }
   }
+
+  // handle def metadata
+  const [{ name,  stateMutability, visibility }] = lookupMetadata(metadata, node.name.name)
 
   const fd = {
     body: {
@@ -51,12 +54,16 @@ function FunctionDeclaration(node) {
     },
     scope: currentScope++,
     src: '0:0:0',
-    stateMutability: 'nonpayable', /* TODO: handle stateMutability */
+    stateMutability: stateMutability || 'nonpayable',
     virtual: false,
-    visibility: "public" /* TODO: handle visibility */
+    visibility: visibility || 'public'
   }
 
   return fd;
+}
+
+function lookupMetadata(metadata, defName) {
+  return metadata?.defs.filter(_ => _.name === defName)
 }
 
 module.exports = {
