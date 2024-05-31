@@ -8,7 +8,7 @@ const Controller = (programFile, specFile) => {
   const f = fs.readFileSync(programFile).toString()
   const parser = new Parser()
   const inputAst = parser.parse(f);
-  // console.log(JSON.stringify(inputAst, null, 2))
+  console.log(JSON.stringify(inputAst, null, 2))
 
   // metadata
   const y = fs.readFileSync(specFile, 'utf8').toString()
@@ -16,7 +16,7 @@ const Controller = (programFile, specFile) => {
 
   const transpiler = new Transpiler(inputAst, metadata)
   const outputAst = transpiler.transpile()
-  // console.log(JSON.stringify(outputAst, null, 2))
+  //console.log(JSON.stringify(outputAst, null, 2))
 
   const codegen = new Codegen()
   const solidityCode = codegen.generate(outputAst)
