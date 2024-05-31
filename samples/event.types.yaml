@@ -7,10 +7,8 @@ defs:
     - name: receive
       parameters:
         amount: u256
-      returnType: null
-      visibility:
-          - public
-      payable: true
+      visibility: public
+      stateMutability: payable
 
 events:
   Received:

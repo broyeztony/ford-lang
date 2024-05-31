@@ -779,7 +779,7 @@ class Parser {
     }
 
     this._eat(':')
-    const value = this.MemberExpression()
+    const value = this.CallMemberExpression()
     if (this._lookahead.type === ',') {
       this._eat(',')
     }

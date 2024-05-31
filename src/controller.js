@@ -8,19 +8,19 @@ const Controller = (programFile, specFile) => {
   const f = fs.readFileSync(programFile).toString()
   const parser = new Parser()
   const inputAst = parser.parse(f);
-  // console.log(JSON.stringify(inputAst, null, 2))
+  console.log(JSON.stringify(inputAst, null, 2))
 
   // metadata
   const y = fs.readFileSync(specFile, 'utf8').toString()
   const metadata = YAML.parse(y)
 
   const transpiler = new Transpiler(inputAst, metadata)
-  const outputAst = transpiler.transpile()
-  // console.log(JSON.stringify(outputAst, null, 2))
+  //const outputAst = transpiler.transpile()
+  //console.log(JSON.stringify(outputAst, null, 2))
 
   const codegen = new Codegen()
-  const solidityCode = codegen.generate(outputAst)
-  console.log(solidityCode)
+  //const solidityCode = codegen.generate(outputAst)
+  //console.log(solidityCode)
 }
 
 Controller(process.argv[2], process.argv[3])
