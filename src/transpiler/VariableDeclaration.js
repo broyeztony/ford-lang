@@ -154,12 +154,8 @@ function VariableDeclaration(node) {
           }
         }
       } else {
-        console.log('@ initializer', JSON.stringify(initializer, null, 2))
         delete variable.initialValue
       }
-
-      console.log('@ variable', JSON.stringify(variable, null, 2))
-
     } else if (initializer.type === 'ObjectLiteral') {
     } else if (initializer.type === 'NumericLiteral') {
       NumericLiteral(variable.declarations[0], variable, initializer)
