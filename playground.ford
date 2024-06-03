@@ -1,18 +1,17 @@
 contract Playground;
 
-/* state variables
-let y = u8(2);
-let z = u32(2000000);
-let b = true;
-let s = "hello Ford!";
-let addr = address("0xCA35b7d915458EF540aDe6068dFe2F44E8fa733c");
+// state variables
 let owner = address();
-*/
-let a = u8(-2);
+let addr = address("0xCA35b7d915458EF540aDe6068dFe2F44E8fa733c");
+let s = "hello Ford!";
+let a = i8(-2);
+let b1 = true;
+let x = u256();
 
 def lambda {
 
-    let x = i16(-100);
+    let z = i16(-100);
     let y = -1;
-
+    let st = "hey!";
+    let b2 = false;
 }

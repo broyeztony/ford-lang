@@ -50,8 +50,24 @@ function VariableValue() {
   }
 }
 
+function SubExpression(nodeType, kind, typeDescriptions, value) {
+  return {
+    hexValue: '',
+      id: GetId(),
+    isConstant: false,
+    isLValue: false,
+    isPure: true,
+    kind: kind,
+    lValueRequested: false,
+    nodeType: nodeType,
+    src: source,
+    typeDescriptions: typeDescriptions,
+    value: value
+  }
+}
 
 module.exports = {
   VariableBase,
-  VariableValue
+  VariableValue,
+  SubExpression
 };

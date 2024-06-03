@@ -1,5 +1,5 @@
-const {GetId, fordTypes2SolidityTypes} = require("./utils");
-const {VariableBase, VariableValue} = require("./VariableCommons");
+const {GetId, FordTypes2SolidityTypes} = require("./utils");
+const {VariableBase, VariableValue, SubExpression} = require("./VariableCommons");
 
 /*
 {
@@ -43,9 +43,9 @@ function VariableDeclaration(node) {
 
   let variable = {}
 
-  variable = {...variableBase}
+  variable = { ...variableBase }
   variable.assignments = [], // TODO: understand this
-  variable.declarations = [variableAttributes]
+  variable.declarations = [ variableAttributes ]
 
   if (initializer) {
 
@@ -77,31 +77,20 @@ function VariableDeclaration(node) {
       variable.initialValue.typeDescriptions.typeString = `int_const -${initializer.argument.value}`
 
       // handle value within subExpression
-      variable.initialValue.subExpression = {
-        hexValue: '',
-        id: GetId(),
-        isConstant: false,
-        isLValue: false,
-        isPure: true,
-        kind: 'number',
-        lValueRequested: false,
-        nodeType: 'Literal',
-        src: source,
-        typeDescriptions: {
-          typeIdentifier: undefined, // resolved below
-          typeString: undefined, // resolved below
+      variable.initialValue.subExpression = SubExpression(
+        'Literal',
+        'number',
+        {
+          typeIdentifier: `t_rational_${initializer.argument.value}_by_1`,
+          typeString: `int_const ${initializer.argument.value}`
         },
-        value: undefined // resolved below
-      }
-
-      variable.initialValue.subExpression.typeDescriptions.typeIdentifier = `t_rational_${initializer.argument.value}_by_1`
-      variable.initialValue.subExpression.typeDescriptions.typeString = `int_const ${initializer.argument.value}`
-      variable.initialValue.subExpression.value = `${initializer.argument.value}`
+  `${initializer.argument.value}`
+      )
     }
     else if (initializer.type === 'CallExpression') {
 
       const calleeName = initializer.callee.name
-      const {typeIdentifier, typeString, kind} = fordTypes2SolidityTypes[calleeName]
+      const {typeIdentifier, typeString, kind} = FordTypes2SolidityTypes[calleeName]
 
       let declaration = variable.declarations[0]
 
@@ -131,27 +120,15 @@ function VariableDeclaration(node) {
         variable.initialValue.typeDescriptions.typeString = `int_const -${argument.argument.value}`
 
         // handle value within subExpression
-        variable.initialValue.subExpression = {
-          hexValue: '',
-          id: GetId(),
-          isConstant: false,
-          isLValue: false,
-          isPure: true,
-          kind: 'number',
-          lValueRequested: false,
-          nodeType: 'Literal',
-          src: source,
-          typeDescriptions: {
-            typeIdentifier: undefined, // resolved below
-            typeString: undefined, // resolved below
+        variable.initialValue.subExpression = SubExpression(
+          'Literal',
+          'number',
+          {
+            typeIdentifier: `t_rational_${argument.argument.value}_by_1`,
+            typeString: `int_const ${argument.argument.value}`
           },
-          value: undefined // resolved below
-        }
-
-        variable.initialValue.subExpression.typeDescriptions.typeIdentifier = `t_rational_${argument.argument.value}_by_1`
-        variable.initialValue.subExpression.typeDescriptions.typeString = `int_const ${argument.argument.value}`
-        variable.initialValue.subExpression.value = `${argument.argument.value}`
-        //
+          `${argument.argument.value}`
+        )
 
       } else {
         variable.initialValue.kind = kind
@@ -171,60 +148,66 @@ function VariableDeclaration(node) {
           variable.initialValue.value = `${argument.value}`
         }
       }
-
-
     } else if (initializer.type === 'ObjectLiteral') {
     } else if (initializer.type === 'NumericLiteral') {
-      let declaration = variable.declarations[0]
-
-      declaration.typeDescriptions.typeIdentifier = 't_uint256'
-      declaration.typeDescriptions.typeString = 'uint256'
-      declaration.typeName.name = 'uint256'
-      declaration.typeName.typeDescriptions.typeIdentifier = 't_uint256'
-      declaration.typeName.typeDescriptions.typeString = 'uint256'
-
-      variable.initialValue.kind = 'number'
-      variable.initialValue.nodeType = 'Literal'
-
-      variable.initialValue.typeDescriptions.typeIdentifier = `t_rational_${initializer.value}_by_1`
-      variable.initialValue.typeDescriptions.typeString = `int_const ${initializer.value}`
-      variable.initialValue.value = `${initializer.value}`
+      NumericLiteral(variable.declarations[0], variable, initializer)
     } else if (initializer.type === 'StringLiteral') {
-      let declaration = variable.declarations[0]
-
-      declaration.typeDescriptions.typeIdentifier = 't_string_storage'
-      declaration.typeDescriptions.typeString = 'string'
-      declaration.typeName.name = 'string'
-      declaration.typeName.typeDescriptions.typeIdentifier = 't_string_storage_ptr'
-      declaration.typeName.typeDescriptions.typeString = 'string'
-
-      variable.initialValue.kind = 'string'
-      variable.initialValue.nodeType = 'Literal'
-
-      variable.initialValue.typeDescriptions.typeIdentifier = `t_stringliteral`
-      variable.initialValue.typeDescriptions.typeString = `literal_string "${initializer.value}"`
-      variable.initialValue.value = `${initializer.value}`
+      variable.declarations[0].storageLocation = 'memory'
+      StringLiteral(variable.declarations[0], variable, initializer)
     } else if (initializer.type === 'BooleanLiteral') {
-      let declaration = variable.declarations[0]
-
-      declaration.typeDescriptions.typeIdentifier = 't_bool'
-      declaration.typeDescriptions.typeString = 'bool'
-      declaration.typeName.name = 'bool'
-      declaration.typeName.typeDescriptions.typeIdentifier = 't_bool'
-      declaration.typeName.typeDescriptions.typeString = 'bool'
-
-      variable.initialValue.kind = 'bool'
-      variable.initialValue.nodeType = 'Literal'
-
-      variable.initialValue.typeDescriptions.typeIdentifier = `t_bool`
-      variable.initialValue.typeDescriptions.typeString = 'bool'
-      variable.initialValue.value = `${initializer.value}`
+      BooleanLiteral(variable.declarations[0], variable, initializer)
     } else {
     } // NullLiteral
-
   }
 
   return variable
+}
+
+function NumericLiteral(declaration, variable, initializer) {
+
+  declaration.typeDescriptions.typeIdentifier = 't_uint256'
+  declaration.typeDescriptions.typeString = 'uint256'
+  declaration.typeName.name = 'uint256'
+  declaration.typeName.typeDescriptions.typeIdentifier = 't_uint256'
+  declaration.typeName.typeDescriptions.typeString = 'uint256'
+
+  variable.initialValue.kind = 'number'
+  variable.initialValue.nodeType = 'Literal'
+
+  variable.initialValue.typeDescriptions.typeIdentifier = `t_rational_${initializer.value}_by_1`
+  variable.initialValue.typeDescriptions.typeString = `int_const ${initializer.value}`
+  variable.initialValue.value = `${initializer.value}`
+}
+
+function StringLiteral(declaration, variable, initializer) {
+
+  declaration.typeDescriptions.typeIdentifier = 't_string_memory_ptr'
+  declaration.typeDescriptions.typeString = 'string'
+  declaration.typeName.name = 'string'
+  declaration.typeName.typeDescriptions.typeIdentifier = 't_string_storage_ptr'
+  declaration.typeName.typeDescriptions.typeString = 'string'
+
+  variable.initialValue.kind = 'string'
+  variable.initialValue.nodeType = 'Literal'
+
+  variable.initialValue.typeDescriptions.typeIdentifier = `t_stringliteral`
+  variable.initialValue.typeDescriptions.typeString = `literal_string "${initializer.value}"`
+  variable.initialValue.value = `${initializer.value}`
+}
+
+function BooleanLiteral(declaration, variable, initializer) {
+  declaration.typeDescriptions.typeIdentifier = 't_bool'
+  declaration.typeDescriptions.typeString = 'bool'
+  declaration.typeName.name = 'bool'
+  declaration.typeName.typeDescriptions.typeIdentifier = 't_bool'
+  declaration.typeName.typeDescriptions.typeString = 'bool'
+
+  variable.initialValue.kind = 'bool'
+  variable.initialValue.nodeType = 'Literal'
+
+  variable.initialValue.typeDescriptions.typeIdentifier = `t_bool`
+  variable.initialValue.typeDescriptions.typeString = 'bool'
+  variable.initialValue.value = `${initializer.value}`
 }
 
 module.exports = {
