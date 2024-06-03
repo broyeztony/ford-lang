@@ -16,7 +16,7 @@ const Controller = (programFile, specFile) => {
 
   const transpiler = new Transpiler(inputAst, metadata)
   const outputAst = transpiler.transpile()
-  console.log(JSON.stringify(outputAst, null, 2))
+  // console.log(JSON.stringify(outputAst, null, 2))
 
   const codegen = new Codegen()
   const solidityCode = codegen.generate(outputAst)

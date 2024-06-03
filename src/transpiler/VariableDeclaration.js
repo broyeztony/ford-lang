@@ -102,13 +102,15 @@ function VariableDeclaration(node) {
 
       const argument = initializer.arguments[0]
 
-      if (argument.type === 'UnaryExpression') {
+      if (initializer.arguments.length > 0 &&
+        initializer.arguments[0].type === 'UnaryExpression') {
 
         if (!['i8', 'i16', 'i32', 'i64', 'i128', 'i256'].includes(calleeName)) { // TODO: handle negative integers
           throw new Error('Invalid initializer: UnaryExpression')
         }
 
-        //
+        const argument = initializer.arguments[0]
+
         delete variable.initialValue.kind
         delete variable.initialValue.value
 
@@ -130,24 +132,34 @@ function VariableDeclaration(node) {
           `${argument.argument.value}`
         )
 
-      } else {
+      } else if (initializer.arguments[0]) {
+
         variable.initialValue.kind = kind
         variable.initialValue.nodeType = 'Literal'
 
         if (['u8', 'u16', 'u32', 'u64', 'u128', 'u256'].includes(calleeName)) {
-          variable.initialValue.typeDescriptions.typeIdentifier = `t_rational_${argument.value}_by_1`
-          variable.initialValue.typeDescriptions.typeString = `int_const ${argument.value}`
-          variable.initialValue.value = `${argument.value}`
+          variable.initialValue.typeDescriptions.typeIdentifier = `t_rational_${initializer.arguments[0].value}_by_1`
+          variable.initialValue.typeDescriptions.typeString = `int_const ${initializer.arguments[0].value}`
+          variable.initialValue.value = `${initializer.arguments[0].value}`
         } else if (['i8', 'i16', 'i32', 'i64', 'i128', 'i256'].includes(calleeName)) { // TODO: handle negative integers
-          variable.initialValue.typeDescriptions.typeIdentifier = `t_rational_${argument.value}_by_1`
-          variable.initialValue.typeDescriptions.typeString = `int_const ${argument.value}`
-          variable.initialValue.value = `${argument.value}`
+          variable.initialValue.typeDescriptions.typeIdentifier = `t_rational_${initializer.arguments[0].value}_by_1`
+          variable.initialValue.typeDescriptions.typeString = `int_const ${initializer.arguments[0].value}`
+          variable.initialValue.value = `${initializer.arguments[0].value}`
         } else if (calleeName === 'address') { // type address
           variable.initialValue.typeDescriptions.typeIdentifier = `t_address`
           variable.initialValue.typeDescriptions.typeString = `address`
-          variable.initialValue.value = `${argument.value}`
+
+          if (initializer.arguments[0]) {
+            variable.initialValue.value = `${initializer.arguments[0].value}`
+          }
         }
+      } else {
+        console.log('@ initializer', JSON.stringify(initializer, null, 2))
+        delete variable.initialValue
       }
+
+      console.log('@ variable', JSON.stringify(variable, null, 2))
+
     } else if (initializer.type === 'ObjectLiteral') {
     } else if (initializer.type === 'NumericLiteral') {
       NumericLiteral(variable.declarations[0], variable, initializer)
@@ -213,5 +225,3 @@ function BooleanLiteral(declaration, variable, initializer) {
 module.exports = {
   VariableDeclaration,
 }
-
-

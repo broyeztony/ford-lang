@@ -10,6 +10,7 @@ let x = u256();
 
 def lambda {
 
+    let w = u8();
     let z = i16(-100);
     let y = -1;
     let st = "hey!";
