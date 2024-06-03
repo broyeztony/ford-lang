@@ -1,4 +1,5 @@
 const {GetId, fordTypes2SolidityTypes} = require("./utils");
+const {VariableBase, VariableValue} = require("./VariableCommons");
 
 /*
 {
@@ -33,34 +34,7 @@ function VariableDeclaration(node) {
   const inputDeclaration = node.declarations[0]
   const initializer = inputDeclaration.initializer
 
-  const variableAttributes = {
-    constant: false,
-    id: GetId(),
-    mutability: 'mutable',
-    name: inputDeclaration.id.name,
-    nameLocation: source,
-    nodeType: 'VariableDeclaration',
-    scope: currentScope++,
-    src: source,
-    stateVariable: node.stateVariable,
-    storageLocation: 'default',
-    typeDescriptions: {
-      typeIdentifier: undefined, // resolved below
-      typeString: undefined // resolved below
-    },
-    typeName: {
-      id: GetId(),
-      name: undefined, // resolved below
-      nodeType: 'ElementaryTypeName',
-      src: source,
-      typeDescriptions: {
-        typeIdentifier: undefined, // resolved below
-        typeString: undefined // resolved below
-      }
-    },
-    visibility: 'internal'
-  }
-
+  const variableAttributes = VariableBase(inputDeclaration.id.name, node.stateVariable, 'internal')
   const variableBase = { // inside a function
     nodeType: 'VariableDeclarationStatement',
     src: source,
@@ -75,22 +49,7 @@ function VariableDeclaration(node) {
 
   if (initializer) {
 
-    let variableValue = {
-      hexValue: '',
-      id: GetId(),
-      isConstant: false,
-      isLValue: false,
-      isPure: true,
-      kind: undefined, // resolved below
-      lValueRequested: false,
-      nodeType: undefined,
-      src: source,
-      typeDescriptions: {
-        typeIdentifier: undefined, // resolved below
-        typeString: undefined, // resolved below
-      },
-      value: undefined // resolved below
-    }
+    let variableValue = VariableValue()
 
     variable.initialValue = variableValue
 

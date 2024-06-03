@@ -1,4 +1,5 @@
 const {GetId, fordTypes2SolidityTypes} = require("./utils");
+const {VariableBase, VariableValue} = require("./VariableCommons");
 
 /*
 {
@@ -34,34 +35,9 @@ function StateVariableDeclaration (node, metadata) {
   const initializer = declaration.initializer
 
   let variable = {}
-  const baseVariable = {
-    constant: false,
-    id: GetId(),
-    mutability: "mutable",
-    name: declaration.id.name,
-    nameLocation: source,
-    nodeType: 'VariableDeclaration',
-    scope: currentScope++,
-    src: source,
-    stateVariable: true,
-    storageLocation: "default",
-    typeDescriptions: {
-      typeIdentifier: undefined,
-      typeString: undefined
-    },
-    typeName: {
-      id: GetId(),
-      name: undefined,
-      nodeType: 'ElementaryTypeName',
-      src: source,
-      stateMutability: 'nonpayable',
-      typeDescriptions: {
-        typeIdentifier: undefined,
-        typeString: undefined
-      }
-    },
-    visibility: 'public'
-  }
+
+  let baseVariable = VariableBase(declaration.id.name, node.stateVariable, 'public')
+  baseVariable.typeName.stateMutability = 'nonpayable' // TODO: handle me!
 
   // resolving type
   if (!initializer) {
@@ -112,22 +88,8 @@ function StateVariableDeclaration (node, metadata) {
   // state variable with initial value
   if (initializer) {
 
-    const variableValue = {
-      hexValue: '',
-      id: GetId(),
-      isConstant: false,
-      isLValue: false,
-      isPure: true,
-      kind: undefined,
-      lValueRequested: false,
-      nodeType: "Literal",
-      src: source,
-      typeDescriptions: {
-        typeIdentifier: undefined,
-        typeString: undefined
-      },
-      value: undefined
-    }
+    const variableValue = VariableValue()
+    variableValue.nodeType = 'Literal'
 
     if (initializer.type === 'CallExpression') {
       if (initializer.arguments.length > 0) {
