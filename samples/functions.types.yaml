@@ -1,17 +1,20 @@
-state:
-    - name: x
-      type: u8
-    - name: addr
-      type: address
+state: {}
 
 defs:
-    - name: addToX
-      parameters:
-        y: u8
-      returnType: u8
-      visibility:
-          - public
-      stateMutability:
-          - view
+  - name: addToX
+    parameters:
+      y: u8
+      z: u8
+    returnType: u8
+    visibility: public
+    stateMutability: nonpayable
 
-events: {}
+  - name: addToY
+    parameters:
+      x: u8
+      z: u8
+    returnType: u8
+    visibility: public
+    stateMutability: nonpayable
+
+# events: {}

@@ -5,7 +5,7 @@ const GetId = () => {
   return global.currentId
 }
 
-const fordTypes2SolidityTypes = {
+const FordTypes2SolidityTypes = {
   // unsigned integers
   'u8'      : { typeIdentifier: 't_uint8', typeString: 'uint8', kind: 'number' },
   'u16'     : { typeIdentifier: 't_uint16', typeString: 'uint16', kind: 'number' },
@@ -27,5 +27,5 @@ const fordTypes2SolidityTypes = {
 }
 
 module.exports = {
-  GetId, fordTypes2SolidityTypes
+  GetId, FordTypes2SolidityTypes
 }

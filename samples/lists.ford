@@ -3,6 +3,8 @@ contract Lists;
 def doList {
 
 	let myList = listU8(1, 1, 2, 3, 5);
+    head(myList); // 1
+    tail(myList); // 5
 
     // i.e `5`
     let itemAtIndex4 = getItem(myList, 4);

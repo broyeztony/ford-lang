@@ -7,11 +7,9 @@ def receive(amount) {
     let ev = { address: msg.sender, amount: amount };
 
     if send(myAddress, amount) {
-        ev.message = "Received some ether";
-        emit("Received", ev);
+        emit('ReceivedEther', msg.sender, 'Received some ether', amount);
     } else {
-        ev.message = "Transfer failure";
-        emit("TransferError", ev);
+        emit('TransferError', msg.sender, 'Houston, we got a problem', amount);
     }
 }
 
