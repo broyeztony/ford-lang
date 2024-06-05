@@ -1,0 +1,23 @@
+contract Matches;
+
+def doMatch {
+
+    /**
+    should transpile to:
+    if (x > 10) {}
+    else if (x < -10) {}
+    else {}
+    */
+    match x {
+    	> 10  : {
+    		// do this
+    	},
+    	< -10 : {
+    		// do that
+    	},
+    	_     : { } // else
+    }
+
+
+
+}

@@ -75,10 +75,6 @@ class Parser {
         return this.VariableStatement()
       case 'return':
         return this.ReturnStatement();
-      case 'recover':
-        return this.RecoverStatement();
-      case 'while':
-      case 'do':
       case 'for':
         return this.IterationStatement()
       default:
@@ -184,20 +180,6 @@ class Parser {
   }
 
   /**
-   * RecoverStatement:
-   * 'recover' OptExpression
-   */
-  RecoverStatement () {
-    this._eat('recover');
-    const argument = this._lookahead.type !== ';' ? this.Expression() : null;
-    this._eat(';');
-    return {
-      type: 'RecoverStatement',
-      argument
-    }
-  }
-
-  /**
    * IterationStatement
    * : WhileStatement
    * | DoWhileStatement
@@ -206,38 +188,8 @@ class Parser {
    */
   IterationStatement () {
     switch(this._lookahead.type) {
-      case 'while':
-        return this.WhileStatement();
-      case 'do':
-        return this.DoWhileStatement();
       case 'for':
         return this.ForStatement();
-    }
-  }
-
-  WhileStatement () {
-    this._eat('while')
-    const test = this.Expression()
-
-    const body = this.FunctionStatement();
-    return {
-      type: 'WhileStatement',
-      test,
-      body,
-    }
-  }
-
-  DoWhileStatement(){
-    this._eat('do')
-    const body = this.FunctionStatement();
-    this._eat('while')
-    const test = this.Expression()
-    this._eat(';')
-
-    return {
-      type: 'DoWhileStatement',
-      body,
-      test
     }
   }
 

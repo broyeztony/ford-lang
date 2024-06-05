@@ -1,11 +1,10 @@
-const {FunctionDeclaration} = require("./FunctionDeclaration");
-const {VariableDeclaration} = require("./VariableDeclaration");
 const {GetId} = require("./utils");
-const {StateVariableDeclaration} = require("./StateVariableDeclaration");
+const {Contract} = require("./model/Contract");
 
 global.currentId = 0
 global.currentScope = 0
 global.source = '0:0:0'
+
 
 class Transpiler {
   constructor (inputAst, metadata) {
@@ -25,51 +24,9 @@ class Transpiler {
 
   transpileContract(){
 
-    const contract = {
-      abstract: false,
-      baseContracts: [],
-      canonicalName: this.inputAst['name'],
-      contractDependencies: [],
-      contractKind: 'contract',
-      fullyImplemented: true,
-      id: GetId(),
-      linearizedBaseContracts: [
-        // TODO: fill me
-      ],
-      name: this.inputAst['name'],
-      nameLocation: "0:0:0",
-      nodeType: 'ContractDefinition',
-      nodes: this.transpileContractNodes(),
-      scope: currentScope++,
-      src: '0:0:0',
-      usedErrors: [],
-      usedEvents: []
-    }
-
+    const contract = Contract(this.inputAst, this.metadata)
     this.outputAst.data.sources['playground.sol'].ast.nodes.push(contract)
   }
-
-  transpileContractNodes(){
-    const outputNodes = []
-    const ln = this.inputAst.nodes.length
-    let outputNode
-    for (let i = 0 ; i < ln; i++) {
-      const node = this.inputAst.nodes[i]
-
-      switch (node.type) {
-        case 'FunctionDeclaration':
-          outputNode = FunctionDeclaration(node, this.metadata)
-          outputNodes.push(outputNode)
-          break
-        case 'VariableStatement':
-          outputNode = StateVariableDeclaration(node, this.metadata)
-          outputNodes.push(outputNode)
-          break
-      }
-    }
-    return outputNodes
-  }
-
 
   fillHeader() {
     /* TODO:

@@ -1,4 +1,4 @@
-const {GetId} = require("./utils");
+const {GetId} = require("./../utils");
 
 /**
 {
@@ -30,7 +30,7 @@ const {GetId} = require("./utils");
   }
 }
 */
-function ForStatement(node) {
+function ForStatement(node, metadata) {
 
   const declaration = node.init.declarations[0]
   const initializer = declaration.initializer
