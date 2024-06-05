@@ -1,6 +1,6 @@
 
 
-const GetId = () => {
+const   GetId = () => {
   global.currentId++
   return global.currentId
 }

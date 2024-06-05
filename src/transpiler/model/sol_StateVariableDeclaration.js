@@ -2,7 +2,7 @@ const {Sol_VariableDeclaration} = require("./sol_VariableDeclaration");
 const {StringLiteralTypings, StringLiteralValue} = require("./StringLiteral");
 const {BooleanLiteralTypings, BooleanLiteralValue} = require("./BooleanLiteral");
 const {NumericLiteralTypings, NumericLiteralValue} = require("./NumericLiteral");
-const {CallExpressionTypings} = require("./CallExpression");
+const {CallExpressionTypings, CallExpressionValue} = require("./CallExpression");
 
 /*
 {
@@ -44,7 +44,8 @@ function Sol_StateVariableDeclaration (node, metadata) {
 
   // handle the `value` field if initializer.value is not null or initializer.arguments is not empty
   // console.log('@Sol_StateVariableDeclaration, initializer.value:', initializer.value, 'initializer.arguments:', initializer.arguments)
-  if (initializer.value || (initializer.arguments && initializer.arguments.length > 0)) {
+
+  if (initializer.hasOwnProperty('value') || (initializer.arguments && initializer.arguments.length > 0)) {
     let solVarValue;
     switch (initializer.type) {
       case 'StringLiteral'  :
@@ -57,7 +58,9 @@ function Sol_StateVariableDeclaration (node, metadata) {
         solVarValue = NumericLiteralValue(initializer.value);
         break
       case 'ObjectLiteral'  : console.error('ERROR: Not Implemented'); break
-      case 'CallExpression' : console.error('ERROR: Not Implemented'); break
+      case 'CallExpression' :
+        solVarValue = CallExpressionValue(initializer);
+        break
     }
     solVarDeclaration.value = solVarValue
   }
