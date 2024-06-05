@@ -12,8 +12,6 @@ function BooleanLiteralTypings(solVarDecl) {
 
 function BooleanLiteralValue(value) {
 
-  console.log('@BooleanLiteralValue value:', value)
-
   let buffer = { typeDescriptions: {} }
 
   buffer.id = GetId()

@@ -1,14 +1,5 @@
 contract Playground;
 
-/* state variables
-let owner = address();
-let addr = address("0xCA35b7d915458EF540aDe6068dFe2F44E8fa733c"); // addresses must have a visibility either public or private (or internal TBC)
-let s = "hello Ford!";
-let a = i8(-2);
-let b1 = true;
-let x = u256();
-*/
-
 let owner = address();
 let s = "hello Ford!";
 
@@ -26,10 +17,17 @@ let x0 = i8(10);
 let x1 = i16(100);
 let x2 = i32(1000);
 let addr = address("0xCA35b7d915458EF540aDe6068dFe2F44E8fa733c");
+let x3 = i8(-2);
+let x4 = i64(-1100002);
 
 def lambda {
     let z = 100;
     let b2 = false;
     let st = "hey!";
     let localAddr = address("0xCA35b7d915458EF540aDe6068dFe2F44E8fa733c");
+    let ab = i32(-3478923);
+
+    for let k = 0 to 10 {
+    
+    }
 }
