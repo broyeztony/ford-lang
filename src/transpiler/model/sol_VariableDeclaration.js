@@ -1,37 +1,48 @@
-const {GetId, FordTypes2SolidityTypes} = require("./utils");
-const {VariableBase, VariableValue, SubExpression} = require("./VariableCommons");
+const { GetId, FordTypes2SolidityTypes} = require("./../utils");
+const {CallExpressionTypings} = require("./CallExpression");
+const {StringLiteralTypings} = require("./StringLiteral");
+const {BooleanLiteralTypings} = require("./BooleanLiteral");
+const {NumericLiteralTypings} = require("./NumericLiteral");
 
-/*
-{
-  "type": "VariableStatement",
-  "stateVariable": true,
-  "declarations": [
-    {
-      "type": "VariableDeclaration",
-      "id": {
-        "type": "Identifier",
-        "name": "addr"
-      },
-      "initializer": {
-        "type": "CallExpression",
-        "callee": {
-          "type": "Identifier",
-            "name": "address"
-        },
-        "arguments": [
-          {
-            "type": "StringLiteral",
-            "value": "0x0"
-          }
-        ]
-      }
-    }
-  ]
-},
- */
-function VariableDeclaration(node) {
+function Sol_VariableDeclaration(node, metadata, isStateVar) {
 
-  const inputDeclaration = node.declarations[0]
+  const { type, id, initializer } = node
+
+  let solVarDeclaration = {
+    constant: false,
+    id: GetId(),
+    mutability: 'mutable',
+    name: id.name,
+    nameLocation: source,
+    nodeType: 'VariableDeclaration',
+    scope: currentScope++,
+    src: source,
+    stateVariable: isStateVar,
+    storageLocation: 'default',
+    typeDescriptions: {},
+    typeName: {
+      id: GetId(),
+      /* stateMutability */
+      nodeType: 'ElementaryTypeName',
+      src: source,
+      typeDescriptions: {}
+    },
+    visibility: 'public' // TODO: handle me
+  }
+
+  // process initializer
+  // type can be a `CallExpression`, a `StringLiteral`, a `BooleanLiteral`, `NumericLiteral`, or an `ObjectLiteral`
+  switch (initializer.type) {
+    case 'StringLiteral'  : StringLiteralTypings(solVarDeclaration); break
+    case 'BooleanLiteral' : BooleanLiteralTypings(solVarDeclaration); break
+    case 'NumericLiteral' : NumericLiteralTypings(solVarDeclaration); break
+    case 'ObjectLiteral'  : console.error('ERROR: Not Implemented'); break
+    case 'CallExpression' : CallExpressionTypings(solVarDeclaration, initializer.callee)
+  }
+
+  return solVarDeclaration
+
+  /*
   const initializer = inputDeclaration.initializer
 
   const variableAttributes = VariableBase(inputDeclaration.id.name, node.stateVariable, 'internal')
@@ -169,8 +180,10 @@ function VariableDeclaration(node) {
   }
 
   return variable
+   */
 }
 
+/*
 function NumericLiteral(declaration, variable, initializer) {
 
   declaration.typeDescriptions.typeIdentifier = 't_uint256'
@@ -217,7 +230,8 @@ function BooleanLiteral(declaration, variable, initializer) {
   variable.initialValue.typeDescriptions.typeString = 'bool'
   variable.initialValue.value = `${initializer.value}`
 }
+*/
 
 module.exports = {
-  VariableDeclaration,
+  Sol_VariableDeclaration,
 }

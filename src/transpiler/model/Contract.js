@@ -1,9 +1,10 @@
 const {GetId} = require("../utils");
-const {FunctionDeclaration} = require("../FunctionDeclaration");
-const {StateVariableDeclaration} = require("../StateVariableDeclaration");
+const {FunctionDeclaration} = require("./FunctionDeclaration");
+const {StateVariableDeclaration} = require("./sol_StateVariableDeclaration");
+const {VariableStatement} = require("./VariableStatement");
 
 
-function Contract(node) {
+function Contract(node, metadata) {
 
   const contract = {
     abstract: false,
@@ -18,7 +19,7 @@ function Contract(node) {
     name: node['name'],
     nameLocation: "0:0:0",
     nodeType: 'ContractDefinition',
-    nodes: Nodes(node),
+    nodes: Nodes(node, metadata),
     scope: currentScope++,
     src: '0:0:0',
     usedErrors: [],
@@ -28,7 +29,7 @@ function Contract(node) {
   return contract
 }
 
-function Nodes (node) {
+function Nodes (node, metadata) {
   const outputNodes = []
   const ln = node.nodes.length
   let outputNode
@@ -37,11 +38,11 @@ function Nodes (node) {
 
     switch (nod.type) {
       case 'FunctionDeclaration':
-        outputNode = FunctionDeclaration(nod, global.metadata)
+        outputNode = FunctionDeclaration(nod, metadata)
         outputNodes.push(outputNode)
         break
       case 'VariableStatement':
-        outputNode = StateVariableDeclaration(nod, global.metadata)
+        outputNode = VariableStatement(nod, metadata)
         outputNodes.push(outputNode)
         break
     }

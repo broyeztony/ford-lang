@@ -1,5 +1,5 @@
-const {GetId, FordTypes2SolidityTypes} = require("./utils");
-const {VariableBase, VariableValue, SubExpression} = require("./VariableCommons");
+const {GetId, FordTypes2SolidityTypes} = require("./../utils");
+const {VariableBase, VariableValue, SubExpression} = require("./../VariableCommons");
 
 /*
 {
@@ -29,7 +29,7 @@ const {VariableBase, VariableValue, SubExpression} = require("./VariableCommons"
   ]
 },
  */
-function StateVariableDeclaration (node, metadata) {
+function Ori_StateVariableDeclaration (node, metadata) {
 
   const declaration = node.declarations[0]
   const initializer = declaration.initializer
@@ -200,5 +200,5 @@ function SetTypeDescription(baseVariable, tdti, tdts, tnn, tnti, tnts) {
 }
 
 module.exports = {
-  StateVariableDeclaration,
+  Ori_StateVariableDeclaration,
 }

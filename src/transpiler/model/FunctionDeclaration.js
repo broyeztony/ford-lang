@@ -1,6 +1,7 @@
-const {VariableDeclaration} = require("./VariableDeclaration");
 const {ForStatement} = require("./ForStatement");
-const {GetId} = require("./utils");
+const {GetId} = require("./../utils");
+const {VariableStatement} = require("./VariableStatement");
+const {Sol_VariableDeclarationStatement} = require("./sol_VariableDeclarationStatement");
 
 function FunctionDeclaration(node, metadata) {
 
@@ -12,11 +13,11 @@ function FunctionDeclaration(node, metadata) {
     const stmtNode = blockStatements[i]
     switch (stmtNode.type) {
       case 'VariableStatement':
-        outputNode = VariableDeclaration(stmtNode)
+        outputNode = Sol_VariableDeclarationStatement(stmtNode, metadata)
         outputNodes.push(outputNode)
         break
       case 'ForStatement':
-        outputNode = ForStatement(stmtNode)
+        outputNode = ForStatement(stmtNode, metadata)
         outputNodes.push(outputNode)
         break
     }

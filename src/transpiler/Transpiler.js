@@ -1,18 +1,15 @@
-const {FunctionDeclaration} = require("./FunctionDeclaration");
-const {VariableDeclaration} = require("./VariableDeclaration");
 const {GetId} = require("./utils");
-const {StateVariableDeclaration} = require("./StateVariableDeclaration");
-const {Contract} = require("./inputs/Contract");
+const {Contract} = require("./model/Contract");
 
 global.currentId = 0
 global.currentScope = 0
 global.source = '0:0:0'
-global.metadata = null
+
 
 class Transpiler {
   constructor (inputAst, metadata) {
     this.inputAst = inputAst;
-    global.metadata = metadata;
+    this.metadata = metadata;
     this.outputAst = { data: { sources: { 'playground.sol': { ast: { nodes: [] }, id: currentId++ } } } }
   }
   transpile() {
@@ -27,7 +24,7 @@ class Transpiler {
 
   transpileContract(){
 
-    const contract = Contract(this.inputAst)
+    const contract = Contract(this.inputAst, this.metadata)
     this.outputAst.data.sources['playground.sol'].ast.nodes.push(contract)
   }
 
