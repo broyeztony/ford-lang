@@ -1,6 +1,5 @@
 const {GetId} = require("../utils");
 
-
 function NumericLiteralTypings(solVarDecl) {
 
   solVarDecl.typeDescriptions.typeIdentifier = 't_uint256'
@@ -12,7 +11,7 @@ function NumericLiteralTypings(solVarDecl) {
 
 function NumericLiteralValue(value) {
 
- let buffer = { typeDescriptions: {}}
+ const buffer = { typeDescriptions: {} }
 
   buffer.id = GetId()
   buffer.hexValue = ''

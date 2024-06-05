@@ -22,8 +22,6 @@ function Sol_VariableDeclarationStatement(node, metadata) {
   solVariableDeclarationStatement.declarations.push(solVarDeclaration)
 
   // handle the `value` field if initializer.value is not null or initializer.arguments is not empty
-  // console.log('@Sol_StateVariableDeclaration, initializer.value:', initializer.value, 'initializer.arguments:', initializer.arguments)
-
   if (initializer.hasOwnProperty('value') || (initializer.arguments && initializer.arguments.length > 0)) {
     let solVarValue;
     switch (initializer.type) {

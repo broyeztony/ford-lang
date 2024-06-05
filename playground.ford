@@ -28,6 +28,6 @@ def lambda {
     let ab = i32(-3478923);
 
     for let k = 0 to 10 {
-    
+
     }
 }
