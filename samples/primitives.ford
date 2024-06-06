@@ -1,6 +1,39 @@
 contract PrimitiveTypes;
 
-let aString = ""; // string
-let aBool = true; // boolean
-let aUint8 = u8(255); // uint8
-let anAddress = address("0xCA35b7d915458EF540aDe6068dFe2F44E8fa733c"); // address
+let owner = address();
+let s = "hello Ford!";
+
+let bOne = false;
+let y = 100000000000000;
+let y0 = u8(200);
+let y1 = u16(2000);
+
+let x = 10; // handled as a `u256`
+let x0 = i8(-10); // negative integer
+let x1 = i16(100);
+let x2 = i32(-1000);
+
+def lambda {
+
+    let z = 100;
+    let bTwo = true;
+    let localAddr = address("0xCA35b7d915458EF540aDe6068dFe2F44E8fa733c");
+
+    for let k = 0 to 10 {}
+}
+
+/** the `contains` native helper function will be expanded as below, then transpiled
+```ford
+let listContainsElement = false;
+for let k = 0 to len(x) {
+    if getItem(myList, k) == y {
+        listContainsElement = true;
+        exit;
+    }
+}
+return listContainsElement;
+```
+*/
+def contains (x: listU8, y: u8): bool {
+    return contains(x, y);
+}

@@ -138,6 +138,13 @@ class Parser {
       this._eat(')');
     }
 
+    // handle return type
+    let returnType
+    if (this._lookahead.type === ':') {
+      this._eat(':');
+      returnType = this.Identifier()
+    }
+
     const body = this.BlockStatement();
     const buffer =  {
       type: 'FunctionDeclaration',
@@ -148,6 +155,11 @@ class Parser {
     if (params) {
       buffer.params = params
     }
+
+    if (returnType) {
+      buffer.returnType = returnType
+    }
+
     this._isStateVariable = true
     return buffer;
   }
@@ -160,7 +172,15 @@ class Parser {
   FormalParameterList() {
     const params = []
     do {
-      params.push(this.Identifier())
+      const paramName = this.Identifier()
+      this._eat(':');
+      const paramType = this.Identifier()
+
+      params.push({
+        name: paramName,
+        type: paramType
+      })
+
     } while (this._lookahead.type === ',' && this._eat(','))
     return params;
   }
