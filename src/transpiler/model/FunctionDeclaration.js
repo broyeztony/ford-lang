@@ -2,6 +2,8 @@ const {ForStatement} = require("./ForStatement");
 const {GetId} = require("./../utils");
 const {VariableStatement} = require("./VariableStatement");
 const {Sol_VariableDeclarationStatement} = require("./sol_VariableDeclarationStatement");
+const {Sol_FunctionParameterDeclaration} = require("./sol_FunctionParameterDeclaration");
+const {Sol_FunctionParameterList} = require("./sol_FunctionParameterList");
 
 function FunctionDeclaration(node, metadata) {
 
@@ -24,7 +26,14 @@ function FunctionDeclaration(node, metadata) {
   }
 
   // handle def metadata
-  const [{ name,  stateMutability, visibility }] = lookupMetadata(metadata, node.name.name)
+  const meta = lookupMetadata(metadata, node.name.name)
+  let name, stateMutability, visibility
+  if (meta.length > 0) {
+    const [{ n,  s, v }] = meta
+    name = n
+    stateMutability = s
+    visibility = v
+  }
 
   const fd = {
     body: {
@@ -59,6 +68,11 @@ function FunctionDeclaration(node, metadata) {
     virtual: false,
     visibility: visibility || 'public'
   }
+
+  // handle parameters list
+  const solFuncParams = Sol_FunctionParameterList(node.params, metadata)
+  fd.parameters = solFuncParams
+  //
 
   return fd;
 }

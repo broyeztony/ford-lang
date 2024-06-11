@@ -12,7 +12,14 @@ for let k = 0 to len(x) {
 }
 return listContainsElement;
 ```
-*/
+
 def contains (x: listU8, y: u8): bool {
     return contains(x, y);
+}
+*/
+
+def what (x: u8, y: u8) {
+
+    // revert(x * y > 100, 'Too high. Reverting');
+    // emit('Multiplied', x, y);
 }

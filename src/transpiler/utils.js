@@ -22,6 +22,8 @@ const FordTypes2SolidityTypes = {
   'i128'    : { typeIdentifier: 't_int128', typeString: 'int128', kind: 'number' },
   'i256'    : { typeIdentifier: 't_int256', typeString: 'int256', kind: 'number' },
 
+  'listU8'  : { typeIdentifier: 't_array$_t_uint8_$dyn_storage', typeString: 'uint256[] storage ref', kind: 'int32' },
+
   // solidity intrinsic types
   'address' : { typeIdentifier: 't_address', typeString: 'address', kind: 'number' },
 }
@@ -29,3 +31,4 @@ const FordTypes2SolidityTypes = {
 module.exports = {
   GetId, FordTypes2SolidityTypes
 }
+
