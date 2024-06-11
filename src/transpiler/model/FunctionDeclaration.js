@@ -69,10 +69,17 @@ function FunctionDeclaration(node, metadata) {
     visibility: visibility || 'public'
   }
 
-  // handle parameters list
+  // handle function parameters list
   const solFuncParams = Sol_FunctionParameterList(node.params, metadata)
   fd.parameters = solFuncParams
-  //
+
+  // handle return parameters
+  const returnTypeInput = {
+    name: { name: '', type: 'Identifier' },
+    type: node.returnType
+  }
+  const solFuncReturnParams = Sol_FunctionParameterList([returnTypeInput], metadata)
+  fd.returnParameters = solFuncReturnParams
 
   return fd;
 }

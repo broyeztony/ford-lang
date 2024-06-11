@@ -10,8 +10,6 @@ function Sol_FunctionParameterList(node, metadata) {
     src: source,
   }
 
-  console.log('@Sol_FunctionParameterList', node)
-
   parameterList.parameters = node.map(p => Sol_FunctionParameterDeclaration(p))
 
   return parameterList
