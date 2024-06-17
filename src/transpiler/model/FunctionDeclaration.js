@@ -2,7 +2,6 @@ const {ForStatement} = require("./ForStatement");
 const {GetId} = require("./../utils");
 const {VariableStatement} = require("./VariableStatement");
 const {Sol_VariableDeclarationStatement} = require("./sol_VariableDeclarationStatement");
-const {Sol_FunctionParameterDeclaration} = require("./sol_FunctionParameterDeclaration");
 const {Sol_FunctionParameterList} = require("./sol_FunctionParameterList");
 
 function FunctionDeclaration(node, metadata) {
@@ -70,16 +69,20 @@ function FunctionDeclaration(node, metadata) {
   }
 
   // handle function parameters list
-  const solFuncParams = Sol_FunctionParameterList(node.params, metadata)
-  fd.parameters = solFuncParams
+  if (node.params) {
+      const solFuncParams = Sol_FunctionParameterList(node.params, metadata)
+    fd.parameters = solFuncParams
+  }
 
   // handle return parameters
-  const returnTypeInput = {
-    name: { name: '', type: 'Identifier' },
-    type: node.returnType
+  if (node.returnType) {
+    const returnTypeInput = {
+      name: { name: '', type: 'Identifier' },
+      type: node.returnType
+    }
+    const solFuncReturnParams = Sol_FunctionParameterList([returnTypeInput], metadata)
+    fd.returnParameters = solFuncReturnParams
   }
-  const solFuncReturnParams = Sol_FunctionParameterList([returnTypeInput], metadata)
-  fd.returnParameters = solFuncReturnParams
 
   return fd;
 }

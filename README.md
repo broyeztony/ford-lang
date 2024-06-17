@@ -36,6 +36,10 @@ def lambda {
 
     }
 }
+
+def what (x: u8, y: u8, addr: address): u8 {
+
+}
 ```
 
 You end up with 
@@ -64,7 +68,7 @@ contract Playground {
     int8 public x3 = -2;
     int64 public x4 = -1100002;
 
-    function lambda() public pure {
+    function lambda() public {
         uint256 z = 100;
         bool b2 = false;
         string memory st = "hey!";
@@ -72,6 +76,8 @@ contract Playground {
         int32 ab = -3478923;
         for (uint256 k = 0; k < 10; k++) {}
     }
+
+    function what(uint8 memory x, uint8 memory y, address memory addr) public returns (uint8 memory) {}
 }
 ```
 
