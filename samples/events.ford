@@ -2,9 +2,7 @@ contract Events;
 
 let myAddress = address("0xfe3091F63A0b0b1cf81ff53102434aa287aC5289");
 
-def receive(amount) {
-
-    let ev = { address: msg.sender, amount: amount };
+def receive(amount /* u256 */) {
 
     if send(myAddress, amount) {
         emit('ReceivedEther', msg.sender, 'Received some ether', amount);

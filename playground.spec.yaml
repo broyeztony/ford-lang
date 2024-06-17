@@ -6,4 +6,14 @@ defs:
     # visibility: external
     # params: []
     # returnType: null
+  - name: contains
+    stateMutability: pure
+    params:
+      - name: x
+        type: listU8
+      - name: y
+        type: u8
+    returnType: bool
+
+
 
