@@ -22,7 +22,47 @@ const FordTypes2SolidityTypes = {
   'i128'    : { typeIdentifier: 't_int128', typeString: 'int128', kind: 'number' },
   'i256'    : { typeIdentifier: 't_int256', typeString: 'int256', kind: 'number' },
 
-  'listU8'  : { typeIdentifier: 't_array$_t_uint8_$dyn_storage', typeString: 'uint256[] storage ref', kind: 'int32' },
+  // 'listU8'  : { typeIdentifier: 't_array$_t_uint8_$dyn_storage', typeString: 'uint256[] storage ref', kind: 'int32' },
+  'bool'    : { typeIdentifier: 't_bool', typeString: 'bool', kind: 'bool' },
+
+  'string'  : [
+    {
+      typeDescriptions: {
+        typeIdentifier: 't_string_memory_ptr',
+        typeString: 'string'
+      },
+      typeName: {
+        name: 'string',
+        typeDescriptions: {
+          typeIdentifier: 't_string_storage_ptr',
+          typeString: 'string'
+        }
+      },
+      kind: 'string',
+      storageLocation: 'memory'
+    },
+    {
+      typeDescriptions: {
+        typeIdentifier: 't_string_storage',
+        typeString: 'string'
+      },
+      typeName: {
+        name: 'string',
+        typeDescriptions: {
+          typeIdentifier: 't_string_storage_ptr',
+          typeString: 'string'
+        }
+      },
+      value: {
+        kind: 'string',
+        typeDescriptions: {
+          typeIdentifier: 't_stringliteral',
+          typeString: 'literal_string'
+        }
+      },
+      storageLocation: 'default'
+    },
+  ],
 
   // solidity intrinsic types
   'address' : { typeIdentifier: 't_address', typeString: 'address', kind: 'number' },

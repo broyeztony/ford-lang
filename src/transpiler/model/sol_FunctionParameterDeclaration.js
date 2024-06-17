@@ -21,6 +21,7 @@ function Sol_FunctionParameterDeclaration(node, metadata) {
     storageLocation: 'memory',
     typeDescriptions: {},
     typeName: {
+      /* TODO: stateMutability */
       id: GetId(),
       nodeType: 'ElementaryTypeName',
       src: source,

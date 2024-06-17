@@ -18,7 +18,7 @@ def contains (x: listU8, y: u8): bool {
 }
 */
 
-def what (x: u8, y: u8): u8 {
+def what (x: u8, y: u8, addr: address): u8 {
 
     // revert(x * y > 100, 'Too high. Reverting');
     // emit('Multiplied', x, y);
