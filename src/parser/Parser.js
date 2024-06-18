@@ -67,6 +67,10 @@ class Parser {
     switch (this._lookahead.type) {
       case ';':
         return this.EmptyStatement()
+      case 'match':
+        return this.MatchStatement()
+      case 'case':
+        return this.MatchCaseStatement()
       case 'if':
         return this.IfStatement()
       case '{':
@@ -88,6 +92,7 @@ class Parser {
    *  | BlockStatement
    *  | EmptyStatement
    *  | VariableStatement
+   *  | MatchStatement
    *  | IfStatement
    *  | IterationStatement
    *  | FunctionStatement
@@ -260,6 +265,31 @@ class Parser {
       test,
       consequent,
       alternate
+    }
+  }
+
+  MatchStatement() {
+    this._eat('match')
+    const matchBlock = this.BlockStatement()
+
+    return {
+      type: 'MatchStatement',
+      matchBlock
+    }
+  }
+
+  MatchCaseStatement(){
+
+    this._eat('case')
+    const test = this.Expression()
+
+    this._eat(':')
+    const body = this.BlockStatement()
+
+    return {
+      type: 'CaseStatement',
+      test,
+      body
     }
   }
 

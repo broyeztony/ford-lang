@@ -19,6 +19,8 @@ const Spec = [
 
   // ------------------------ KEYWORDS
   [/^\blet\b/, 'let'],
+  [/^\bmatch\b/, 'match'],
+  [/^\bcase\b/, 'case'],
   [/^\bif\b/, 'if'],
   [/^\belse\b/, 'else'],
   [/^\btrue\b/, 'true'],
