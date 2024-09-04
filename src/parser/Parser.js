@@ -164,6 +164,19 @@ class Parser {
     return buffer;
   }
 
+  DataLocation() {
+    let dataLocation = 'default'
+    if (this._lookahead.type === 'CALLDATA') {
+      dataLocation = 'calldata'
+      this._eat('CALLDATA');
+    }
+    if (this._lookahead.type === 'STORAGE') {
+      dataLocation = 'storage'
+      this._eat('STORAGE');
+    }
+    return dataLocation
+  }
+
   /**
    * FormalParameterList:
    * Identifier
@@ -172,13 +185,17 @@ class Parser {
   FormalParameterList() {
     const params = []
     do {
+      // optional data location modifier (`storage`, `calldata` or `memory` as the default)
+      const dataLocation = this.DataLocation()
+
       const paramName = this.Identifier()
       this._eat(':');
       const paramType = this.Identifier()
 
       params.push({
         name: paramName,
-        type: paramType
+        type: paramType,
+        dataLocation
       })
 
     } while (this._lookahead.type === ',' && this._eat(','))

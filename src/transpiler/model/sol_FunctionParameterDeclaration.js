@@ -6,7 +6,7 @@ const {FordTypes2SolidityTypes} = require("../utils");
  */
 function Sol_FunctionParameterDeclaration(node, metadata) {
 
-  const { name, type } = node
+  const { name, type, dataLocation } = node
 
   let solParamDeclaration = {
     constant: false,
@@ -18,7 +18,7 @@ function Sol_FunctionParameterDeclaration(node, metadata) {
     scope: currentScope++,
     src: source,
     stateVariable: false,
-    storageLocation: 'default', // TODO: handle other data-location (for structs, mappings, arrays)
+    storageLocation: dataLocation,
     typeDescriptions: {},
     typeName: {
       /* TODO: stateMutability */

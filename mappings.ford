@@ -1,9 +1,7 @@
-contract Mappings;
+contract NewSymbols;
 
 let s = "hello Ford!";
 
-def what (x: string, m: address->u256): u8 {
-
-    let a = "my string";
-    return "yes!";
+def symbols (^ x: string, ∞ m: address->u256, y: i16): u8 {
+    return 1;
 }
