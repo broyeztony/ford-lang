@@ -32,7 +32,6 @@ function Sol_FunctionParameterDeclaration(node, metadata) {
 
 
   let solTypes = FordTypes2SolidityTypes[node.type.name]
-  console.log('@Sol_FunctionParameterDeclaration node.type.name', node.type.name, JSON.stringify(solTypes, null, 2))
 
   // string case
   if (node.type.name === 'string') {
