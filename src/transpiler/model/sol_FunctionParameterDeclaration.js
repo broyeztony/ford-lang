@@ -18,7 +18,7 @@ function Sol_FunctionParameterDeclaration(node, metadata) {
     scope: currentScope++,
     src: source,
     stateVariable: false,
-    storageLocation: 'memory',
+    storageLocation: 'default', // TODO: handle other data-location (for structs, mappings, arrays)
     typeDescriptions: {},
     typeName: {
       /* TODO: stateMutability */
