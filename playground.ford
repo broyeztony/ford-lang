@@ -26,15 +26,9 @@ def lambda {
     let localAddr = address("0xCA35b7d915458EF540aDe6068dFe2F44E8fa733c");
     let ab = i32(-3478923);
 
-    for let k = 0 to 10 {
-
-    }
+    for let k = 0 to 10 {}
 }
 
 def what (_x: u8, _y: u8, _addr: address): u8 {
-
-    // revert(x * y > 100, 'Too high. Reverting');
-    // emit('Multiplied', _x, _y);
-
     return _x * _y;
 }
