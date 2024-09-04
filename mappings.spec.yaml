@@ -1,0 +1,8 @@
+defs:
+  - name: what
+    # nonpayable, view, pure , payable
+    stateMutability: pure
+    # public, internal, external, private
+    visibility: external
+    # params: []
+    # returnType: null

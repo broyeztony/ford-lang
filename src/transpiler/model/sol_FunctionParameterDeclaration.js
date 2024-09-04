@@ -30,16 +30,24 @@ function Sol_FunctionParameterDeclaration(node, metadata) {
     visibility: 'internal'
   }
 
+  const fordTypeName = node.type.name
 
-  let solTypes = FordTypes2SolidityTypes[node.type.name]
+  let solTypes = FordTypes2SolidityTypes[fordTypeName]
 
   // string case
-  if (node.type.name === 'string') {
+  if (fordTypeName === 'string') {
     let stringConfig = solTypes.find(_ => _.storageLocation === 'memory') // todo: handle storageLocation === 'calldata'
     solParamDeclaration.typeDescriptions.typeIdentifier = stringConfig.typeDescriptions.typeIdentifier
     solParamDeclaration.typeDescriptions.typeString = 'string'
     solParamDeclaration.typeName.name = 'string'
     solParamDeclaration.typeName.typeDescriptions = stringConfig.typeName.typeDescriptions
+  }
+  else if (fordTypeName === 'address->u256') {
+    solParamDeclaration.typeDescriptions = solTypes.typeDescriptions
+    solParamDeclaration.typeName = solTypes.typeName
+    solParamDeclaration.typeName.id = GetId()
+    solParamDeclaration.typeName.keyType['id'] = GetId()
+    solParamDeclaration.typeName.valueType['id'] = GetId()
   }
   else {
     solParamDeclaration.typeDescriptions = solTypes.typeIdentifier

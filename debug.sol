@@ -29,9 +29,8 @@ contract Debug {
     */
     string public s = "hello world!";
 
-    function balances(string memory userId) external returns (uint256) {
+    function balances(string memory userId, mapping(uint => address) storage foo) internal returns (uint256) {
         string memory a = "my string";
-
         return 1;
     }
 
