@@ -32,7 +32,7 @@ const Spec = [
 
   // ------------------------ NUMBERS
   [/^\d+/, 'NUMBER'],
-  [/^\w+/, 'IDENTIFIER'],
+  [/^\w+(?:->\w+)?/, 'IDENTIFIER'],
 
   // ------------------------ Equality
   [/^[=!]=/, 'EQUALITY_OPERATOR'],

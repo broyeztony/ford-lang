@@ -8,7 +8,7 @@ const Controller = (programFile, specFile) => {
   const f = fs.readFileSync(programFile).toString()
   const parser = new Parser()
   const inputAst = parser.parse(f);
-  // console.log(JSON.stringify(inputAst, null, 2))
+  console.log(JSON.stringify(inputAst, null, 2))
 
   // metadata
   const y = fs.readFileSync(specFile, 'utf8').toString()
