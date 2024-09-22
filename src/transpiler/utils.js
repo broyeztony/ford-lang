@@ -33,25 +33,25 @@ const FordTypes2SolidityTypes = {
     },
     typeName: {
       keyType: {
+        name: "address",
+        stateMutability: "nonpayable",
+        nodeType: "ElementaryTypeName",
+        typeDescriptions: {
+          typeIdentifier: "t_address",
+          typeString: "address"
+        }
+      },
+      nodeType: "Mapping",
+      typeDescriptions: {
+        typeIdentifier: "t_mapping$_t_address_$_t_uint256_$",
+        typeString: "mapping(address => uint256)"
+      },
+      valueType: {
         name: "uint",
         nodeType: "ElementaryTypeName",
         typeDescriptions: {
           typeIdentifier: "t_uint256",
           typeString: "uint256"
-        }
-      },
-      nodeType: "Mapping",
-      typeDescriptions: {
-        typeIdentifier: "t_mapping$_t_uint256_$_t_address_$",
-        typeString: "mapping(uint256 => address)"
-      },
-      valueType: {
-        name: "address",
-        nodeType: "ElementaryTypeName",
-        stateMutability: "nonpayable",
-        typeDescriptions: {
-          typeIdentifier: "t_address",
-          typeString: "address"
         }
       }
     }
