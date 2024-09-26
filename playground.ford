@@ -1,9 +1,10 @@
 contract Playground;
 
 let owner = address();
+let addr = address("0xCA35b7d915458EF540aDe6068dFe2F44E8fa733c");
+
 let s = "hello Ford!";
 let b = false;
-let y = 100000000000000;
 let y0 = u8(200);
 let y1 = u16(2000);
 let y2 = u32(20000);
@@ -11,24 +12,26 @@ let y3 = u64(200000);
 let y4 = u128(2000000);
 let y5 = u256(20000000);
 
-let x = 10;
 let x0 = i8(10);
 let x1 = i16(100);
 let x2 = i32(1000);
-let addr = address("0xCA35b7d915458EF540aDe6068dFe2F44E8fa733c");
 let x3 = i8(-2);
 let x4 = i64(-1100002);
 
-def lambda {
-    let z = 100;
-    let b2 = false;
-    let st = "local!";
-    let localAddr = address("0xCA35b7d915458EF540aDe6068dFe2F44E8fa733c");
-    let ab = i32(-3478923);
+// Public
+def somePublicDef {}
 
+// External
+def* lambda {
     for let k = 0 to 10 {}
 }
 
-def symbols (^ x: string, ∞ m: address->u256, y: i16): u8 {
+// Private
+def- symbols (^ x: string, ∞ m: address->u256, y: i16): u8 {
     return 1;
+}
+
+// Payable
+def$ payableDef (amount: i16) {
+    return 10;
 }

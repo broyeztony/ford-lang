@@ -26,7 +26,12 @@ const Spec = [
   [/^\bnull\b/, 'null'],
   [/^\bfor\b/, 'for'],
   [/^\bto\b/, 'to'],
-  [/^\bdef\b/, 'def'],
+
+  [/^\bdef\$(?!\w)/, 'DEF_PAYABLE'],
+  [/^\bdef\*(?!\w)/, 'DEF_EXTERNAL'],
+  [/^\bdef\-(?!\w)/, 'DEF_PRIVATE'],
+  [/^\bdef\b/, 'DEF'],
+
   [/^\breturn\b/, 'return'],
   [/^\bcontract\b/, 'contract'],
 
@@ -80,6 +85,7 @@ class Tokenizer {
     const string = this._string.slice(this._cursor)
     for (const [regexp, tokenType] of Spec) {
       const tokenValue = this._match(regexp, string)
+
       // could not match this regexp -> continuing to next regexp
       if (tokenValue == null) { continue }
 
