@@ -21,7 +21,6 @@ const Controller = (programFile, specFile) => {
   const codegen = new Codegen()
   const solidityCode = codegen.generate(outputAst)
   console.log(solidityCode)
-
 }
 
 Controller(process.argv[2], process.argv[3])
