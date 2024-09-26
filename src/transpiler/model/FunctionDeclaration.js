@@ -63,9 +63,9 @@ function FunctionDeclaration(node, metadata) {
     },
     scope: currentScope++,
     src: '0:0:0',
-    stateMutability: stateMutability || 'nonpayable',
+    stateMutability: node.stateMutability,
     virtual: false,
-    visibility: visibility || 'public'
+    visibility: node.visibility
   }
 
   // handle function parameters list

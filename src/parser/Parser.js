@@ -101,8 +101,14 @@ class Parser {
     switch (this._lookahead.type) {
       case 'let':
         return this.VariableStatement()
-      case 'def':
-        return this.FunctionDeclaration();
+      case 'DEF_PRIVATE':
+        return this.FunctionDeclaration('private', false);
+      case 'DEF_EXTERNAL':
+        return this.FunctionDeclaration('external', false);
+      case 'DEF_PAYABLE':
+        return this.FunctionDeclaration('public', true);
+      case 'DEF':
+        return this.FunctionDeclaration('public', false);
       default:
         throw new Error(`Invalid token: ${this._lookahead}, expected: one of 'let', 'def'`)
     }
@@ -126,9 +132,25 @@ class Parser {
    * 'def' Identifier BlockStatement
    * ;
    */
-  FunctionDeclaration () {
+  FunctionDeclaration (visibility, isPayable) {
     this._isStateVariable = false
-    this._eat('def');
+
+    switch (visibility) {
+      case 'public':
+        if (isPayable) {
+          this._eat('DEF_PAYABLE');
+        } else {
+          this._eat('DEF');
+        }
+        break
+      case 'private':
+        this._eat('DEF_PRIVATE');
+        break
+      case 'external':
+        this._eat('DEF_EXTERNAL');
+        break
+    }
+
     const name = this.Identifier()
 
     let params
@@ -148,6 +170,8 @@ class Parser {
     const body = this.BlockStatement();
     const buffer =  {
       type: 'FunctionDeclaration',
+      visibility,
+      stateMutability: isPayable ? 'payable' : 'nonpayable',
       name,
       body
     }
