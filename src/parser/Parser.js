@@ -73,7 +73,7 @@ class Parser {
         return this.BlockStatement()
       case 'let':
         return this.VariableStatement()
-      case 'return':
+      case 'ARROW':
         return this.ReturnStatement();
       case 'for':
         return this.IterationStatement()
@@ -231,7 +231,7 @@ class Parser {
    * 'return' OptExpression
    */
   ReturnStatement () {
-    this._eat('return');
+    this._eat('ARROW');
     const argument = this._lookahead.type !== ';' ? this.Expression() : null;
     this._eat(';');
     return {
