@@ -1,5 +1,7 @@
 Hello! 🌞
 
+![Ford Playground Screenshot](docs/playground.png)
+
 ## Command line transpilation 
 
 You start with (playground.ford): 
