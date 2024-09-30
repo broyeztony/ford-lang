@@ -28,7 +28,7 @@ const Spec = [
   [/^\bto\b/, 'to'],
 
   [/^\bdef\$(?!\w)/, 'DEF_PAYABLE'],
-  [/^\bdef\*(?!\w)/, 'DEF_EXTERNAL'],
+  [/^\bdef\/(?!\w)/, 'DEF_EXTERNAL'],
   [/^\bdef\-(?!\w)/, 'DEF_PRIVATE'],
   [/^\bdef\b/, 'DEF'],
 
