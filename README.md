@@ -1,6 +1,8 @@
 Hello! 🌞
 
-You start with 
+## Command line transpilation 
+
+You start with (playground.ford): 
 
 ```ford
 contract Playground;
@@ -91,6 +93,25 @@ contract Playground {
 ### Bytecode
 ```shell
 608060405273ca35b7d915458ef540ade6068dfe2f44e8fa733c60015f6101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055506040518060400160405280600b81526020017f68656c6c6f20466f7264210000000000000000000000000000000000000000008152506002908161009c91906104bc565b505f60035f6101000a81548160ff02191690831515021790555060c8600360016101000a81548160ff021916908360ff1602179055506107d0600360026101000a81548161ffff021916908361ffff160217905550614e20600360046101000a81548163ffffffff021916908363ffffffff16021790555062030d40600360086101000a81548167ffffffffffffffff021916908367ffffffffffffffff160217905550621e8480600360106101000a8154816fffffffffffffffffffffffffffffffff02191690836fffffffffffffffffffffffffffffffff1602179055506301312d00600455600a60055f6101000a8154
+```
+
+## server-side transpilation
+
+```shell
+npm run serve
+```
+=> 
+```shell
+Ford transpiler server running on port 3000
+```
+
+Then send a POST request to the `/transpile` API endpoint
+
+```shell
+curl -X POST \
+  http://localhost:3000/transpile \
+  -H "Content-Type: application/json" \
+  -d "{\"code\": $(cat playground.ford | jq -Rs .)}"
 ```
 
 That's it!

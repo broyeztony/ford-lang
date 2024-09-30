@@ -2,9 +2,8 @@ const { Parser } = require('./parser/Parser')
 const { Transpiler } = require('./transpiler/Transpiler')
 const {Codegen} = require("./codegen/codegen");
 const fs = require('fs')
-const YAML= require('yaml')
 
-const Controller = (programFile, specFile) => {
+const Controller = (programFile) => {
   const f = fs.readFileSync(programFile).toString()
   const parser = new Parser()
   const inputAst = parser.parse(f);
@@ -19,4 +18,4 @@ const Controller = (programFile, specFile) => {
   console.log(solidityCode)
 }
 
-Controller(process.argv[2], process.argv[3])
+Controller(process.argv[2])
