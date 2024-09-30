@@ -1,6 +1,7 @@
 // server.js
 const express = require('express');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 const { Parser } = require('./../parser/Parser');
 const { Transpiler } = require('./../transpiler/Transpiler');
 const { Codegen } = require('./../codegen/codegen');
@@ -10,6 +11,7 @@ const port = process.env.PORT || 3000;
 
 // Middleware
 app.use(bodyParser.json());
+app.use(cors());
 
 // Transpile endpoint
 app.post('/transpile', (req, res) => {
