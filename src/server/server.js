@@ -29,7 +29,7 @@ app.post('/transpile', (req, res) => {
     const solidityCode = codegen.generate(outputAst);
 
     console.log(solidityCode)
-    
+
     res.json({ solidity: solidityCode });
   } catch (error) {
     console.error('Transpilation error:', error);

@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "compile": "clear && node src/controller.js playground.ford playground.spec.yaml > compilation_artifacts/playground.sol && cat playground.ford && echo '\n--------------------- *\n' && cat playground.spec.yaml && echo '\n-----------------------> \n' && cat compilation_artifacts/playground.sol && solcjs compilation_artifacts/playground.sol --abi -o compilation_artifacts && cat compilation_artifacts/compilation_artifacts_playground_sol_Playground.abi && solcjs compilation_artifacts/playground.sol --bin -o compilation_artifacts && echo '\n' && head -c 800 compilation_artifacts/compilation_artifacts_playground_sol_Playground.bin",
-    "debug": "clear && solc --ast-compact-json debug.sol | tail -n +5 | python -m json.tool"
+    "debug": "clear && solc --ast-compact-json debug.sol | tail -n +5 | python -m json.tool",
+    "serve": "clear && node src/server/server.js "
   },
   "dependencies": {
     "body-parser": "^1.20.3",
