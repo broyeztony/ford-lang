@@ -9,8 +9,9 @@
     "debug": "clear && solc --ast-compact-json debug.sol | tail -n +5 | python -m json.tool"
   },
   "dependencies": {
-    "solc-typed-ast": "^18.1.6",
-    "yaml": "^2.4.2"
+    "body-parser": "^1.20.3",
+    "express": "^4.21.0",
+    "solc-typed-ast": "^18.1.6"
   },
   "repository": {
     "type": "git",

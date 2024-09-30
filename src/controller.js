@@ -2,7 +2,6 @@ const { Parser } = require('./parser/Parser')
 const { Transpiler } = require('./transpiler/Transpiler')
 const {Codegen} = require("./codegen/codegen");
 const fs = require('fs')
-const YAML= require('yaml')
 
 const Controller = (programFile) => {
   const f = fs.readFileSync(programFile).toString()
