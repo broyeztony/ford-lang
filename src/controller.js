@@ -10,11 +10,7 @@ const Controller = (programFile, specFile) => {
   const inputAst = parser.parse(f);
   // console.log(JSON.stringify(inputAst, null, 2))
 
-  // metadata
-  const y = fs.readFileSync(specFile, 'utf8').toString()
-  const metadata = YAML.parse(y)
-
-  const transpiler = new Transpiler(inputAst, metadata)
+  const transpiler = new Transpiler(inputAst, {})
   const outputAst = transpiler.transpile()
   // console.log(JSON.stringify(outputAst, null, 2))
 

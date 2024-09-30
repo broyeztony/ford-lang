@@ -24,16 +24,6 @@ function FunctionDeclaration(node, metadata) {
     }
   }
 
-  // handle def metadata
-  const meta = lookupMetadata(metadata, node.name.name)
-  let name, stateMutability, visibility
-  if (meta.length > 0) {
-    const [{ n,  s, v }] = meta
-    name = n
-    stateMutability = s
-    visibility = v
-  }
-
   const fd = {
     body: {
       id: GetId(),
@@ -85,10 +75,6 @@ function FunctionDeclaration(node, metadata) {
   }
 
   return fd;
-}
-
-function lookupMetadata(metadata, defName) {
-  return metadata?.defs.filter(_ => _.name === defName)
 }
 
 module.exports = {
