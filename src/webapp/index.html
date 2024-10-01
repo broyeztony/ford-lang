@@ -15,7 +15,7 @@
             display: flex;
             flex-direction: column;
             height: 100vh;
-            background-color: #f0f0f0;
+            background-color: white;
         }
         .header {
             background-color: #4a4a4a;
@@ -38,20 +38,17 @@
             display: flex;
             flex-direction: column;
         }
+        .editor-column {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+        }
         .editor:first-child {
             margin-right: 0.5rem;
         }
         .editor:last-child {
             margin-left: 0.5rem;
-        }
-        textarea {
-            flex: 1;
-            resize: none;
-            padding: 1rem;
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 14px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
         }
         button {
             margin-top: 1rem;
@@ -70,7 +67,11 @@
 
         #fordInput {
             border-radius: 8px;
-            overflow: hidden;
+            flex: 1;
+        }
+
+        #solidityOutput {
+            border-radius: 8px;
             flex: 1;
         }
 
@@ -95,27 +96,12 @@
             border-bottom-left-radius: 8px;
         }
 
-        /* Adjust the solidityOutput textarea to match */
-        #solidityOutput {
-            flex: 1;
-            width: 100%;
-            height: 100%;
-            resize: none;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 10px;
-            box-sizing: border-box;
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 14px;
-        }
-
-        .CodeMirror {
-            height: auto;
-            border: 1px solid #ddd;
-        }
         .cm-keyword {color: #708;}
         .cm-type {color: #085;}
         .cm-operator {color: #a11;}
+        .cm-calldata {color: #770088; }
+        .cm-storage {color: #770088; }
+
     </style>
 </head>
 <body>
@@ -128,7 +114,7 @@
             <div id="fordInput"></div>
         </div>
         <div class="editor">
-            <textarea id="solidityOutput" placeholder="Transpiled Solidity code will appear here..."></textarea>
+            <div id="solidityOutput"></div>
         </div>
     </div>
     <button onclick="transpile()">COMPILE</button>
@@ -136,7 +122,7 @@
 
 <script>
   let fordEditor = CodeMirror(document.getElementById("fordInput"), {
-    value: "// Enter your Ford code here\n",
+    value: "// Enter your Ford code here\ncontract Playground;\n\ndef lambda {\n\tfor let k = 0 to 10 /* step 1 (default) */ { /* do something */ }\n}\n\ndef- symbols (^ x: string, ∞ m: address->u256, y: i16): u8 {\n\t-> 42;\n}",
     mode: "javascript",  // We'll use JS mode as a base
     theme: "neo",
     lineNumbers: true,
@@ -144,6 +130,19 @@
     tabSize: 4,
     indentWithTabs: false,
     autofocus: true
+  });
+
+  let solidityViewer = CodeMirror(document.getElementById("solidityOutput"), {
+    value: "// Transpiled Solidity code will appear here",
+    mode: "javascript",
+    theme: "neo",
+    lineNumbers: true,
+    indentUnit: 4,
+    tabSize: 4,
+    indentWithTabs: false,
+    autofocus: true,
+    lineWrapping: true,
+    viewportMargin: Infinity
   });
 
   CodeMirror.defineMode("ford", function(config, parserConfig) {
@@ -179,6 +178,14 @@
           return "operator";
         }
 
+        if (stream.match(/^\^/)) {
+          return "calldata";
+        }
+
+        if (stream.match(/^∞/)) {
+          return "storage";
+        }
+
         if (stream.match(/^"/)) {
           state.inString = true;
           return "string";
@@ -206,11 +213,11 @@
     })
     .then(response => response.json())
     .then(data => {
-      solidityOutput.value = data.solidity;
+      solidityViewer.setValue(data.solidity);
     })
     .catch((error) => {
       console.error('Error:', error);
-      solidityOutput.value = 'Error occurred during transpilation.';
+      solidityViewer.setValue('Error occurred during compilation.');
     });
   }
 </script>
