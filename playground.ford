@@ -22,7 +22,7 @@ let x4 = i64(-1100002);
 def somePublicDef {}
 
 // External
-def* lambda {
+def/ lambda {
     for let k = 0 to 10 {}
 }
 
