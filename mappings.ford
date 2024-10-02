@@ -1,7 +1,0 @@
-contract NewSymbols;
-
-let s = "hello Ford!";
-
-def symbols (^ x: string, ∞ m: address->u256, y: i16): u8 {
-    return 1;
-}
