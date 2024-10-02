@@ -5,7 +5,7 @@ const {SolUnaryOperation} = require("./sol_UnaryOperation");
 
 function CallExpression(node, parentFn, metadata) {
 
-  console.log('@CallExpression', node, parentFn)
+  // console.log('@CallExpression', node, parentFn)
 
   const { typeIdentifier, typeString } = FordTypes2SolidityTypes[parentFn.returnType.name]
 
@@ -39,8 +39,9 @@ function CallExpression(node, parentFn, metadata) {
     typeDescriptions: {}
   }
 
-  expression.typeDescriptions.typeIdentifier = `t_function_internal_nonpayable$__$returns$_t_uint8_$`
-  expression.typeDescriptions.typeString = `function () returns (uint8)`
+  expression.typeDescriptions.typeIdentifier = `t_function_${parentFn.visibility}_${parentFn.stateMutability}$__$returns$_${typeString}_$`
+  // TODO: handle function parameters
+  expression.typeDescriptions.typeString = `function () returns (${typeIdentifier})`
 
   functionCallExpression.expression = expression
 
