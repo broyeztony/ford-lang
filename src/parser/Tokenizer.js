@@ -32,14 +32,16 @@ const Spec = [
   [/^\bdef\-(?!\w)/, 'DEF_PRIVATE'],
   [/^\bdef\b/, 'DEF'],
 
-  [/^\breturn\b/, 'return'],
   [/^\bcontract\b/, 'contract'],
 
   // ------------------------ NUMBERS
   [/^\d+/, 'NUMBER'],
 
-  // ------------------------ IDENTIFIERS
-  [/^\w+(?:->\w+)?/, 'IDENTIFIER'],
+  // ------------------------ RETURN SYMBOL
+  [/^->/, 'ARROW'],
+
+  // ------------------------ IDENTIFIER
+  [/^[a-zA-Z_]\w*(?:->[\w]+)*/, 'IDENTIFIER'],
 
   // ------------------------ DATA LOCATION MODIFIERS
   [/^\^/, 'CALLDATA'],

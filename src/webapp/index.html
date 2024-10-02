@@ -4,18 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ford Playground</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.0/codemirror.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.0/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.0/mode/javascript/javascript.min.js"></script>
     <style>
         body {
-            font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
             display: flex;
             flex-direction: column;
             height: 100vh;
-            background-color: #f0f0f0;
+            background-color: white;
         }
         .header {
-            background-color: #4a4a4a;
+            font-family: 'Arial', sans-serif;
+            background-color: #9933AA;
             color: white;
             padding: 1rem;
             text-align: center;
@@ -35,56 +39,168 @@
             display: flex;
             flex-direction: column;
         }
+        .editor-column {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+        }
         .editor:first-child {
             margin-right: 0.5rem;
         }
         .editor:last-child {
             margin-left: 0.5rem;
         }
-        textarea {
-            flex: 1;
-            resize: none;
-            padding: 1rem;
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 14px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
         button {
             margin-top: 1rem;
             padding: 0.75rem;
             font-size: 1rem;
-            background-color: #4CAF50;
+            background-color: #9933AA;
             color: white;
-            border: none;
+            border: 1px solid #9933AA;
             border-radius: 4px;
             cursor: pointer;
             transition: background-color 0.3s;
         }
-        button:hover {
-            background-color: #45a049;
+
+        #fordInput {
+            border-radius: 8px;
+            flex: 1;
         }
+
+        #solidityOutput {
+            border-radius: 8px;
+            flex: 1;
+        }
+
+        .CodeMirror {
+            height: 100% !important;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 14px;
+        }
+
+        /* To ensure the content inside CodeMirror is not too close to the edges */
+        .CodeMirror-lines {
+            padding: 10px 0;
+        }
+
+        /* Rounding the corners of the gutter (line numbers area) */
+        .CodeMirror-gutters {
+            border-right: 1px solid #ddd;
+            background-color: white;
+            border-top-left-radius: 8px;
+            border-bottom-left-radius: 8px;
+            padding-right: 25px;
+        }
+
+        .cm-keyword {color: #708;}
+        .cm-type {color: #085;}
+        .cm-operator {color: #a11;}
+        .cm-calldata {color: #770088; }
+        .cm-storage {color: #770088; }
+
     </style>
 </head>
 <body>
 <div class="header">
-    <h1>Ford Playground</h1>
+    <h1><i>F o r d</i>&nbsp; &nbsp;playground</h1>
 </div>
 <div class="container">
     <div class="editors">
         <div class="editor">
-            <textarea id="fordInput" placeholder="Enter Ford code here..."></textarea>
+            <div id="fordInput"></div>
         </div>
         <div class="editor">
-            <textarea id="solidityOutput" placeholder="Transpiled Solidity code will appear here..." readonly></textarea>
+            <div id="solidityOutput"></div>
         </div>
     </div>
     <button onclick="transpile()">COMPILE</button>
 </div>
 
 <script>
+  let fordEditor = CodeMirror(document.getElementById("fordInput"), {
+    value: "// Enter your Ford code here\ncontract Playground;\n\ndef lambda {\n\tfor let k = 0 to 10 /* step 1 (default) */ { /* do something */ }\n}\n\ndef- symbols (^ x: string, ∞ m: address->u256, y: i16): u8 {\n\t-> 42;\n}",
+    mode: "javascript",  // We'll use JS mode as a base
+    theme: "neo",
+    lineNumbers: true,
+    indentUnit: 4,
+    tabSize: 4,
+    indentWithTabs: false,
+    autofocus: true
+  });
+
+  let solidityViewer = CodeMirror(document.getElementById("solidityOutput"), {
+    value: "// Transpiled Solidity code will appear here",
+    mode: "javascript",
+    theme: "neo",
+    lineNumbers: true,
+    indentUnit: 4,
+    tabSize: 4,
+    indentWithTabs: false,
+    autofocus: true,
+    lineWrapping: true,
+    viewportMargin: Infinity
+  });
+
+  CodeMirror.defineMode("ford", function(config, parserConfig) {
+    var jsMode = CodeMirror.getMode(config, "javascript");
+
+    return {
+      startState: function() {
+        return {
+          jsState: CodeMirror.startState(jsMode),
+          inString: false
+        };
+      },
+      token: function(stream, state) {
+        if (state.inString) {
+          if (stream.skipTo('"')) {
+            stream.next();
+            state.inString = false;
+          } else {
+            stream.skipToEnd();
+          }
+          return "string";
+        }
+
+        if (stream.match(/^(contract|def|def\$|def\/|def\-|let)\b/)) {
+          return "keyword";
+        }
+
+        if (stream.match(/^(u8|u16|u32|u64|u128|u256|i8|i16|i32|i64|address|bool|string)\b/)) {
+          return "type";
+        }
+
+        if (stream.match(/^(->)/)) {
+          return "operator";
+        }
+
+        if (stream.match(/^\^/)) {
+          return "calldata";
+        }
+
+        if (stream.match(/^∞/)) {
+          return "storage";
+        }
+
+        if (stream.match(/^"/)) {
+          state.inString = true;
+          return "string";
+        }
+
+        return jsMode.token(stream, state.jsState);
+      }
+    };
+  });
+
+  // Update the mode to use our custom Ford mode
+  fordEditor.setOption("mode", "ford");
+
+  // Update the transpile function to use the CodeMirror editor
   function transpile() {
-    const fordCode = document.getElementById('fordInput').value;
+    const fordCode = fordEditor.getValue();
     const solidityOutput = document.getElementById('solidityOutput');
 
     fetch('http://localhost:3000/transpile', {
@@ -96,11 +212,11 @@
     })
     .then(response => response.json())
     .then(data => {
-      solidityOutput.value = data.solidity;
+      solidityViewer.setValue(data.solidity);
     })
     .catch((error) => {
       console.error('Error:', error);
-      solidityOutput.value = 'Error occurred during transpilation.';
+      solidityViewer.setValue('Error occurred during compilation.');
     });
   }
 </script>

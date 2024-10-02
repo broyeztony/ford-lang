@@ -28,10 +28,14 @@ def/ lambda {
 
 // Private
 def- symbols (^ x: string, ∞ m: address->u256, y: i16): u8 {
-    return 1;
+    -> somePublicDef();
+}
+
+def- simpleInteger {
+    -> 42;
 }
 
 // Payable
 def$ payableDef (amount: i16) {
-    return 10;
+    -> 10;
 }
