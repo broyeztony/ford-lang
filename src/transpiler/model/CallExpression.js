@@ -3,6 +3,51 @@ const {NumericLiteralValue} = require("./NumericLiteral");
 const {SolUnaryOperation} = require("./sol_UnaryOperation");
 
 
+function CallExpression(node, parentFn, metadata) {
+
+  // console.log('@CallExpression', node, parentFn)
+
+  const { typeIdentifier, typeString } = FordTypes2SolidityTypes[parentFn.returnType.name]
+
+  const functionCallExpression = {
+    id: GetId(),
+    isConstant: false,
+    isLValue: false,
+    isPure: false,
+    kind: 'functionCall',
+    nameLocations: [],
+    names: [],
+    lValueRequested :false,
+    nodeType: 'FunctionCall',
+    src: source,
+    tryCall: false,
+    typeDescriptions: {
+      typeIdentifier,
+      typeString
+    },
+    arguments: [],
+    expression: {},
+  }
+
+  const expression = {
+    argumentTypes: [],
+    overloadedDeclarations: [],
+    id: GetId(),
+    name: node.callee.name,
+    nodeType: 'Identifier',
+    src: source,
+    typeDescriptions: {}
+  }
+
+  expression.typeDescriptions.typeIdentifier = `t_function_${parentFn.visibility}_${parentFn.stateMutability}$__$returns$_${typeString}_$`
+  // TODO: handle function parameters
+  expression.typeDescriptions.typeString = `function () returns (${typeIdentifier})`
+
+  functionCallExpression.expression = expression
+
+  return functionCallExpression
+}
+
 function CallExpressionTypings(solVarDeclaration, callee) {
 
   const fnName = callee.name
@@ -81,5 +126,6 @@ function CallExpressionValue(initializer) {
 
 module.exports = {
   CallExpressionTypings,
-  CallExpressionValue
+  CallExpressionValue,
+  CallExpression
 }
