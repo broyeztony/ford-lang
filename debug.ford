@@ -1,0 +1,9 @@
+contract Debug;
+
+//def lambda: u8 {
+//    -> simpleInteger();
+//}
+
+def- simpleInteger: u8 {
+    -> 42;
+}
