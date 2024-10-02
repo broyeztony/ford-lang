@@ -1,9 +1,10 @@
 const {GetId} = require("../utils");
 const {NumericLiteralValue} = require("./NumericLiteral");
+const {CallExpression} = require("./CallExpression");
 
-function ReturnStatement (node, metadata) {
+function ReturnStatement (node, parentNode, metadata) {
 
-  console.log('@ReturnStatement', node)
+  // console.log('@ReturnStatement', node, parentNode)
 
   const returnStatement = {
     id: GetId(),
@@ -15,6 +16,10 @@ function ReturnStatement (node, metadata) {
   switch (node.argument.type) {
     case 'NumericLiteral':
         returnStatement.expression = NumericLiteralValue(node.argument.value)
+      break;
+    // TODO: implement StringLiteral, BooleanLiteral, so forth, on the same model
+    case 'CallExpression':
+        returnStatement.expression = CallExpression(node.argument, parentNode, metadata)
       break;
   }
 

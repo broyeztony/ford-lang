@@ -23,7 +23,7 @@ function FunctionDeclaration(node, metadata) {
         outputNodes.push(outputNode)
         break
       case 'ReturnStatement':
-        outputNode = ReturnStatement(stmtNode, metadata)
+        outputNode = ReturnStatement(stmtNode, node, metadata)
         outputNodes.push(outputNode)
         break
     }
