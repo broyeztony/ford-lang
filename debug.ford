@@ -12,11 +12,11 @@ let y3 = u64(200000);
 let y4 = u128(2000000);
 let y5 = u256(20000000);
 
-def lambda {
+def/ lambda {
 	for let k = 0 to 10 /* step 1 (default) */ { /* do something */ }
 }
 
-def/ symbols (^ x: string, ∞ m: address->u256, y: i16): u8 {
+def- symbols (^ x: string, ∞ m: address->u256, y: i16): u8 {
 
 	-> simpleInteger();
 }
