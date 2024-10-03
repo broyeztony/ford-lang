@@ -13,14 +13,12 @@
     "body-parser": "^1.20.3",
     "cors": "^2.8.5",
     "express": "^4.21.0",
-    "solc-typed-ast": "^18.1.6"
+    "solc-typed-ast": "^18.1.6",
+    "solc": "^0.8.27"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/broyeztony/ford.git"
   },
-  "private": true,
-  "devDependencies": {
-    "solc": "^0.8.26"
-  }
+  "private": true
 }
