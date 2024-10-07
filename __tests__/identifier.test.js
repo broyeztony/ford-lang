@@ -1,4 +1,4 @@
-const { Token } = require('./Token')
+const {Token} = require("../src/parser/Token");
 
 const Spec = [
 
@@ -40,11 +40,13 @@ const Spec = [
   // ------------------------ RETURN SYMBOL
   [/^->/, 'ARROW'],
 
-  // ------------------------ IDENTIFIER
-  [/^[a-zA-Z_]\w*(?:->[\w]+)*/, 'IDENTIFIER'],
+  // ------------------------ IDENTIFIER and TYPES
+  // [/^list\[(?:i32|string|u8|u16|u32|u64|address)\]/, 'LIST'],
+  [/^list\[(?:i8|i16|i24|i32|i40|i48|i56|i64|i72|i80|i88|i96|i104|i112|i120|i128|i136|i144|i152|i160|i168|i176|i184|i192|i200|i208|i216|i224|i232|i240|i248|i256|u8|u16|u24|u32|u40|u48|u56|u64|u72|u80|u88|u96|u104|u112|u120|u128|u136|u144|u152|u160|u168|u176|u184|u192|u200|u208|u216|u224|u232|u240|u248|u256|bool|string|address)\]/, 'LIST'],
+  [/^[a-zA-Z_]\w*(?:->\w+)+/, 'HASHMAP'],
+  [/^[a-zA-Z_]\w*/, 'IDENTIFIER'],
 
   // ------------------------ DATA LOCATION MODIFIERS
-  [/^\*/, 'MEMORY'],
   [/^\^/, 'CALLDATA'],
   [/^∞/, 'STORAGE'],
 
@@ -71,46 +73,51 @@ const Spec = [
   [/^'[^']*'/, 'STRING']
 ]
 
-class Tokenizer {
-  init (string) {
-    this._string = string
-    this._cursor = 0
-  }
+let _string = `
+let mm: address->u256;
+let ss: string = "hello";
+let li: list[address];
+`
+let _cursor = 0
 
-  hasMoreTokens () {
-    return this._cursor < this._string.length
-  }
+const hasMoreTokens = () => {
+  return _cursor < _string.length
+}
 
-  getNextToken () {
-    if (this.hasMoreTokens() === false) { return null }
+const getNextToken = () => {
+  if (hasMoreTokens() === false) { return null }
 
-    const cursorStartPos = this._cursor
-    const string = this._string.slice(this._cursor)
-    for (const [regexp, tokenType] of Spec) {
-      const tokenValue = this._match(regexp, string)
+  const cursorStartPos = _cursor
+  const string = _string.slice(_cursor)
+  for (const [regexp, tokenType] of Spec) {
+    const tokenValue = _match(regexp, string)
 
-      // could not match this regexp -> continuing to next regexp
-      if (tokenValue == null) { continue }
+    // could not match this regexp -> continuing to next regexp
+    if (tokenValue == null) { continue }
 
-      if (tokenType == null) { // skipping whitespace, comments
-        return this.getNextToken()
-      }
-
-      return new Token(tokenType, tokenValue, cursorStartPos, this._cursor)
+    if (tokenType == null) { // skipping whitespace, comments
+      return getNextToken()
     }
 
-    throw new SyntaxError(`Unexpected token at ${string[0]}`)
+    return new Token(tokenType, tokenValue, cursorStartPos, _cursor)
   }
 
-  _match (regexp, string) {
-    const matched = regexp.exec(string)
-    if (matched == null) return null
-
-    this._cursor += matched[0].length
-    return matched[0]
-  }
+  throw new SyntaxError(`Unexpected token at ${string[0]}`)
 }
 
-module.exports = {
-  Tokenizer
+const _match = (regexp, string) => {
+  const matched = regexp.exec(string)
+  if (matched == null) return null
+
+  _cursor += matched[0].length
+  return matched[0]
 }
+
+let token
+do {
+  token = getNextToken()
+  console.log(token);
+} while(token !== null)
+
+
+

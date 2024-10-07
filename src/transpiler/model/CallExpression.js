@@ -1,13 +1,42 @@
 const {FordTypes2SolidityTypes, GetId} = require("../utils");
 const {NumericLiteralValue} = require("./NumericLiteral");
 const {SolUnaryOperation} = require("./sol_UnaryOperation");
+const {StringLiteralValue} = require("./StringLiteral");
 
 
 function CallExpression(node, parentFn, metadata) {
 
-  // console.log('@CallExpression', node, parentFn)
+  console.log('@CallExpression', node, parentFn)
 
-  const { typeIdentifier, typeString } = FordTypes2SolidityTypes[parentFn.returnType.name]
+  let typeIdentifier, typeString;
+  const fordTypeName = parentFn.returnType.name
+  let solType = FordTypes2SolidityTypes[fordTypeName]
+
+  // string case
+  if (fordTypeName === 'string') {
+    let stringConfig = solType.find(_ => _.storageLocation === 'memory') // todo: handle storageLocation === 'calldata'
+    typeIdentifier = stringConfig.typeIdentifier
+    typeString = stringConfig.typeString
+  } else {
+    typeIdentifier = solType.typeIdentifier
+    typeString = solType.typeIdentifier
+  }
+
+  const functionCallArguments = []
+  if (node.arguments && node.arguments.length > 0) {
+    for (let k = 0 ; k < node.arguments.length ; k++) {
+      switch (node.arguments[k].type) {
+        case 'NumericLiteral':
+          functionCallArguments.push(NumericLiteralValue(node.arguments[k].value))
+          break;
+        case 'StringLiteral':
+          let s = StringLiteralValue(node.arguments[k].value);
+          console.log('@s', s)
+          functionCallArguments.push(s)
+          break;
+      }
+    }
+  }
 
   const functionCallExpression = {
     id: GetId(),
@@ -25,12 +54,12 @@ function CallExpression(node, parentFn, metadata) {
       typeIdentifier,
       typeString
     },
-    arguments: [],
+    arguments: functionCallArguments,
     expression: {},
   }
 
   const expression = {
-    argumentTypes: [],
+    argumentTypes: functionCallArguments.map(fca => fca.typeDescriptions),
     overloadedDeclarations: [],
     id: GetId(),
     name: node.callee.name,
@@ -40,6 +69,7 @@ function CallExpression(node, parentFn, metadata) {
   }
 
   expression.typeDescriptions.typeIdentifier = `t_function_${parentFn.visibility}_${parentFn.stateMutability}$__$returns$_${typeString}_$`
+  console.log('@expression.typeDescriptions.typeIdentifier', expression.typeDescriptions.typeIdentifier)
   // TODO: handle function parameters
   expression.typeDescriptions.typeString = `function () returns (${typeIdentifier})`
 
@@ -118,6 +148,17 @@ function CallExpressionValue(initializer) {
       buffer.typeDescriptions.typeIdentifier = `t_address`
       buffer.typeDescriptions.typeString = `address`
       buffer.value = `${addressVal}`
+      break
+    case 'address->u256':
+
+      let solTypes = FordTypes2SolidityTypes['address->u256']
+      delete buffer['kind']
+      buffer.typeDescriptions = solTypes.typeDescriptions
+      buffer.typeName = solTypes.typeName
+      buffer.typeName.id = GetId()
+      buffer.typeName.keyType['id'] = GetId()
+      buffer.typeName.valueType['id'] = GetId()
+
       break
   }
 

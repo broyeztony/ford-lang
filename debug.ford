@@ -1,30 +1,26 @@
+// Enter your Ford code here
 contract Playground;
 
-let owner = address();
-let addr = address("0xCA35b7d915458EF540aDe6068dFe2F44E8fa733c");
+let u0: u8  			= 1;
+let u1: u16 			= 1000;
+let str 				= "";
+let owner: address		= "0x";
+let mm: address->u256;
+let li0: list[i192];
 
-let s = "hello Ford!";
-let b = false;
-let y0 = u8(200);
-let y1 = u16(2000);
-let y2 = u32(20000);
-let y3 = u64(200000);
-let y4 = u128(2000000);
-let y5 = u256(20000000);
+init {
+	mm[owner] = 100000;
+    log("contract Playground initialized");
+}
 
-def/ lambda {
+def lambda {
 	for let k = 0 to 10 /* step 1 (default) */ { /* do something */ }
 }
 
 def- symbols (^ x: string, ∞ m: address->u256, y: i16): u8 {
-
-	-> simpleInteger();
-}
-
-def- simpleInteger (): u8 {
 	-> 42;
 }
 
-def$ payableDef (amount: i16): u8 {
-    -> 10;
+def transfer {
+	transfer (fromA, toB, 10 ethers);
 }

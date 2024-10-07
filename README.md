@@ -2,6 +2,55 @@ Hello! 🌞
 
 ![Ford Playground Screenshot](docs/playground.png)
 
+## Ford types
+
+### Signed and unsigned integers
+```ford
+'i8', 'i16', 'i24', 'i32', 'i40', 'i48', 'i56', 'i64',
+'i72', 'i80', 'i88', 'i96', 'i104', 'i112', 'i120', 'i128',
+'i136', 'i144', 'i152', 'i160', 'i168', 'i176', 'i184', 'i192',
+'i200', 'i208', 'i216', 'i224', 'i232', 'i240', 'i248', 'i256'
+```
+```ford
+'u8', 'u16', 'u24', 'u32', 'u40', 'u48', 'u56', 'u64',
+'u72', 'u80', 'u88', 'u96', 'u104', 'u112', 'u120', 'u128',
+'u136', 'u144', 'u152', 'u160', 'u168', 'u176', 'u184', 'u192',
+'u200', 'u208', 'u216', 'u224', 'u232', 'u240', 'u248', 'u256'
+```
+Example
+```ford
+let y0    : u8        = 200;
+let y1    : u16       = 2000;
+let x0    : i8        = -10;
+```
+
+### Strings
+```ford
+let s   : string    = "hello Ford!";
+```
+
+### Addresses
+```ford
+let addr  : address   = "0xCA35b7d915458EF540aDe6068dFe2F44E8fa733c";
+```
+
+### Booleans
+```ford
+let b     : bool      = false;
+```
+
+### Lists
+```ford
+let li    : list[i32];
+```
+
+### Hashmaps
+```ford
+let mm    : address->u256; 
+```
+
+
+
 ## Command line transpilation 
 
 You start with (playground.ford): 
@@ -9,23 +58,16 @@ You start with (playground.ford):
 ```ford
 contract Playground;
 
-let owner = address();
-let addr = address("0xCA35b7d915458EF540aDe6068dFe2F44E8fa733c");
+let- s    : string    = "hello Ford!";
+let owner : address;
+let addr  : address   = "0xCA35b7d915458EF540aDe6068dFe2F44E8fa733c";
+let b     : bool      = false;
+let y0    : u8        = 200;
+let y1    : u16       = 2000;
+let x0    : i8        = -10;
 
-let s = "hello Ford!";
-let b = false;
-let y0 = u8(200);
-let y1 = u16(2000);
-let y2 = u32(20000);
-let y3 = u64(200000);
-let y4 = u128(2000000);
-let y5 = u256(20000000);
-
-let x0 = i8(10);
-let x1 = i16(100);
-let x2 = i32(1000);
-let x3 = i8(-2);
-let x4 = i64(-1100002);
+let mm    : address->u256; 
+let li    : list[i32];
 
 // Public
 def somePublicDef {}
@@ -59,21 +101,18 @@ You end up with (notice that return statements are not transpiled yet...)
 pragma solidity ^0.8.24;
 
 contract Playground {
+    string private s = "hello Ford!";
     address public owner;
     address public addr = 0xCA35b7d915458EF540aDe6068dFe2F44E8fa733c;
-    string public s = "hello Ford!";
     bool public b = false;
+
+
     uint8 public y0 = 200;
     uint16 public y1 = 2000;
-    uint32 public y2 = 20000;
-    uint64 public y3 = 200000;
-    uint128 public y4 = 2000000;
-    uint256 public y5 = 20000000;
-    int8 public x0 = 10;
-    int16 public x1 = 100;
-    int32 public x2 = 1000;
-    int8 public x3 = -2;
-    int64 public x4 = -1100002;
+    int8 public x0 = -10;
+
+    mapping(address => uint256) public mm;
+    int32[] public li;
 
     function somePublicDef() public {}
 

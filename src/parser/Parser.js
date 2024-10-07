@@ -188,8 +188,16 @@ class Parser {
     return buffer;
   }
 
+  /**
+   * TODO: handle `Error: Data location must be "storage", "memory" or "calldata" for parameter in function, but none was given.`
+   */
   DataLocation() {
+
     let dataLocation = 'default'
+    if (this._lookahead.type === 'MEMORY') {
+      dataLocation = 'memory'
+      this._eat('MEMORY');
+    }
     if (this._lookahead.type === 'CALLDATA') {
       dataLocation = 'calldata'
       this._eat('CALLDATA');
@@ -209,12 +217,17 @@ class Parser {
   FormalParameterList() {
     const params = []
     do {
+
       // optional data location modifier (`storage`, `calldata` or `memory` as the default)
-      const dataLocation = this.DataLocation()
+      let dataLocation = this.DataLocation()
 
       const paramName = this.Identifier()
       this._eat(':');
       const paramType = this.Identifier()
+
+      if (paramType.name === 'string') {
+        dataLocation = 'memory'
+      }
 
       params.push({
         name: paramName,
@@ -480,6 +493,10 @@ class Parser {
       type: 'CallExpression',
       callee,
       arguments: this.Arguments()
+    }
+
+    if (callee.name.indexOf('->') > -1) {
+      callee.type = 'mapping'
     }
 
     if (this._lookahead.type === '(') {

@@ -28,10 +28,12 @@ const FordTypes2SolidityTypes = {
   'address->u256': {
     typeClassification: 'composite',
     typeDescriptions: {
-      typeIdentifier: 't_mapping$_t_uint256_$_t_address_$',
-      typeString: 'mapping(uint256 => address)'
+      typeIdentifier: 't_mapping$_t_address_$_t_uint256_$',
+      typeString: 'mapping(address => uint256)'
     },
     typeName: {
+      keyName: '',
+      keyNameLocation: '-1:-1:-1',
       keyType: {
         name: "address",
         stateMutability: "nonpayable",
@@ -42,10 +44,13 @@ const FordTypes2SolidityTypes = {
         }
       },
       nodeType: "Mapping",
+      src: '0:0:0',
       typeDescriptions: {
         typeIdentifier: "t_mapping$_t_address_$_t_uint256_$",
         typeString: "mapping(address => uint256)"
       },
+      valueName: '',
+      valueNameLocation: '-1:-1:-1',
       valueType: {
         name: "uint",
         nodeType: "ElementaryTypeName",
@@ -94,7 +99,7 @@ const FordTypes2SolidityTypes = {
           typeString: 'literal_string'
         }
       },
-      storageLocation: 'default'
+      storageLocation: 'memory'
     },
   ],
 

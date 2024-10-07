@@ -27,10 +27,11 @@ app.post('/transpile', (req, res) => {
 
     const transpiler = new Transpiler(inputAst, {});
     const outputAst = transpiler.transpile();
+    // console.log('@outputAst', JSON.stringify(outputAst, null, 2))
 
     const codegen = new Codegen();
     const solidityCode = codegen.generate(outputAst);
-    console.log(solidityCode)
+    console.log('@solidityCode', solidityCode)
 
     // binary
     const input = {
@@ -49,7 +50,15 @@ app.post('/transpile', (req, res) => {
       }
     };
 
-    const output = JSON.parse(solc.compile(JSON.stringify(input)));
+    let compiled;
+    try {
+      compiled = solc.compile(JSON.stringify(input))
+    } catch (e) {
+      console.error(e)
+    }
+
+    // console.log('@output.contracts', output.contracts)
+    const output = JSON.parse(compiled);
 
     // `output` here contains the JSON output as specified in the documentation
     let binary = ''
