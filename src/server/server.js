@@ -24,6 +24,7 @@ app.post('/transpile', (req, res) => {
 
     const parser = new Parser();
     const inputAst = parser.parse(fordCode);
+    console.log('@AST', JSON.stringify(inputAst, null, 2))
 
     const transpiler = new Transpiler(inputAst, {});
     const outputAst = transpiler.transpile();

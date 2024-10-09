@@ -31,7 +31,6 @@ function CallExpression(node, parentFn, metadata) {
           break;
         case 'StringLiteral':
           let s = StringLiteralValue(node.arguments[k].value);
-          console.log('@s', s)
           functionCallArguments.push(s)
           break;
       }

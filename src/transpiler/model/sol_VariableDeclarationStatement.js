@@ -8,7 +8,7 @@ const {CallExpressionValue} = require("./CallExpression");
 
 function Sol_VariableDeclarationStatement(node, metadata) {
 
-  const { type, id, initializer } = node.declarations[0]
+  const {varName, varType, initializer} = node.declarations[0]
 
   let solVariableDeclarationStatement = {
     assignments: [],

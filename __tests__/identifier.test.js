@@ -77,6 +77,8 @@ let _string = `
 let mm: address->u256;
 let ss: string = "hello";
 let li: list[address];
+
+def p(* x: i16) {}
 `
 let _cursor = 0
 
