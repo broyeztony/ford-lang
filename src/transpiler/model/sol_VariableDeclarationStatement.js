@@ -3,7 +3,6 @@ const {BooleanLiteralValue} = require("./BooleanLiteral");
 const {NumericLiteralValue} = require("./NumericLiteral");
 const {Sol_VariableDeclaration} = require("./sol_VariableDeclaration");
 const {GetId} = require("../utils");
-const {CallExpressionValue} = require("./CallExpression");
 const {AddressLiteralValue} = require("./AddressLiteral");
 
 

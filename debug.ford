@@ -1,26 +1,26 @@
-// Enter your Ford code here
 contract Playground;
 
-let u0: u8  			= 1;
-let u1: u16 			= 1000;
-let str 				= "";
-let owner: address		= "0x";
-let mm: address->u256;
-let li0: list[i192];
+let owner: address = '0xFFfFfFffFFfffFFfFFfFFFFFffFFFffffFfFFFfF';
+let balances: address->u32;
 
 init {
-	mm[owner] = 100000;
-    log("contract Playground initialized");
+	balances[owner] = 1000000;
 }
 
 def lambda {
-	for let k = 0 to 10 /* step 1 (default) */ { /* do something */ }
+	for let k: u8 = 0 to 10 /* step 1 (default) */ {
+    	/* do something */
+    }
 }
 
-def- symbols (^ x: string, ∞ m: address->u256, y: i16): u8 {
+def- symbols (∞ m: address->u32, ^ s: string): u8 {
 	-> 42;
 }
 
-def transfer {
-	transfer (fromA, toB, 10 ethers);
+def/ p: bool {
+	-> LLLL(false);
+}
+
+def- LLLL(b: bool): bool {
+	-> true;
 }

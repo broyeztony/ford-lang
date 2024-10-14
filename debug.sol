@@ -1,20 +1,26 @@
+// playground.sol
 /// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
 
 contract Playground {
-    address public A = 0xFFfFfFffFFfffFFfFFfFFFFFffFFFffffFfFFFfF;
+    address public owner = 0xFFfFfFffFFfffFFfFFfFFFFFffFFFffffFfFFFfF;
+    mapping(address => uint32) public balances;
+
+    constructor() public {}
 
     function lambda() public {
-        for (uint24 k = 0; k < 10; k++) {}
+        for (uint8 k = 0; k < 10; k++) {}
     }
 
-    function fun(string storage x) private returns (bool  res) {
+    function symbols(mapping(address => uint32) storage m, string calldata s) private returns (uint8  res) {
+        return 42;
+    }
+
+    function p() external returns (bool  res) {
+        return LLLL(false);
+    }
+
+    function LLLL(bool b) private returns (bool  res) {
         return true;
     }
-
-    function LLLL() private {
-        return true;
-    }
-
-    function p() public payable {}
 }

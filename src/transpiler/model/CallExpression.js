@@ -1,26 +1,19 @@
-const {FordTypes2SolidityTypes, GetId} = require("../utils");
+const {FordTypes2SolidityTypes, GetId, solidityTypeIdentifier, solidityTypeString} = require("../utils");
 const {NumericLiteralValue} = require("./NumericLiteral");
 const {SolUnaryOperation} = require("./sol_UnaryOperation");
 const {StringLiteralValue} = require("./StringLiteral");
+const {BooleanLiteralValue} = require("./BooleanLiteral");
 
 
 function CallExpression(node, parentFn, metadata) {
 
-  console.log('@CallExpression', node, parentFn)
-
   let typeIdentifier, typeString;
-  const fordTypeName = parentFn.returnType.name
-  let solType = FordTypes2SolidityTypes[fordTypeName]
+  const fordType = parentFn.returnType.type
 
-  // string case
-  if (fordTypeName === 'string') {
-    let stringConfig = solType.find(_ => _.storageLocation === 'memory') // todo: handle storageLocation === 'calldata'
-    typeIdentifier = stringConfig.typeIdentifier
-    typeString = stringConfig.typeString
-  } else {
-    typeIdentifier = solType.typeIdentifier
-    typeString = solType.typeIdentifier
-  }
+  console.log('@CallExpression', JSON.stringify(node, null, 2), JSON.stringify(parentFn, null, 2))
+
+  typeIdentifier = solidityTypeIdentifier(fordType)
+  typeString = solidityTypeString(fordType)
 
   const functionCallArguments = []
   if (node.arguments && node.arguments.length > 0) {
@@ -32,6 +25,10 @@ function CallExpression(node, parentFn, metadata) {
         case 'StringLiteral':
           let s = StringLiteralValue(node.arguments[k].value);
           functionCallArguments.push(s)
+          break;
+        case 'BooleanLiteral':
+          let b = BooleanLiteralValue(node.arguments[k].value);
+          functionCallArguments.push(b)
           break;
       }
     }
@@ -89,6 +86,7 @@ function CallExpressionTypings(solVarDeclaration, callee) {
   solVarDeclaration.typeName.typeDescriptions.typeString = typeString
 }
 
+/*
 function CallExpressionValue(initializer) {
 
   const fnName = initializer.callee.name
@@ -146,9 +144,9 @@ function CallExpressionValue(initializer) {
 
   return buffer
 }
+*/
 
 module.exports = {
   CallExpressionTypings,
-  CallExpressionValue,
   CallExpression
 }
