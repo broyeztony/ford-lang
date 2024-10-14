@@ -1,12 +1,28 @@
 const {GetId} = require("../utils");
 
-function NumericLiteralTypings(solVarDecl) {
+function NumericLiteralTypings(solVarDecl, varType) {
 
-  solVarDecl.typeDescriptions.typeIdentifier = 't_uint256'
-  solVarDecl.typeDescriptions.typeString = 'uint256'
-  solVarDecl.typeName.name = 'uint256'
-  solVarDecl.typeName.typeDescriptions.typeIdentifier = 't_uint256'
-  solVarDecl.typeName.typeDescriptions.typeString = 'uint256'
+  const prefix = varType.charAt(0)
+  const size = varType.slice(1, 4)
+
+  let typeIdentifier;
+  let typeString;
+  switch (prefix) {
+    case 'i':
+      typeIdentifier = `t_int${size}`
+      typeString = `int${size}`
+      break;
+    case 'u':
+      typeIdentifier = `t_uint${size}`
+      typeString = `uint${size}`
+      break;
+  }
+
+  solVarDecl.typeDescriptions.typeIdentifier = typeIdentifier
+  solVarDecl.typeDescriptions.typeString = typeString
+  solVarDecl.typeName.name = typeString
+  solVarDecl.typeName.typeDescriptions.typeIdentifier = typeIdentifier
+  solVarDecl.typeName.typeDescriptions.typeString = typeString
 }
 
 function NumericLiteralValue(value) {

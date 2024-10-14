@@ -5,6 +5,103 @@ const   GetId = () => {
   return global.currentId
 }
 
+function solidityType(fordType) {
+  switch (fordType) {
+    case 'bool':
+      return { typeClassification: 'primitive', typeIdentifier: 't_bool', typeString: 'bool', kind: 'bool' }
+    case 'address':
+      return { typeClassification: 'primitive', typeIdentifier: 't_address', typeString: 'address', kind: 'number' }
+    case 'string': // TODO: handle strings properly
+      return { typeClassification: 'primitive', typeIdentifier: 't_string_storage_ptr', typeString: 'string', kind: 'string' }
+    case 'u8'   :
+    case 'u16'  :
+    case 'u24'  :
+    case 'u32'  :
+    case 'u40'  :
+    case 'u48'  :
+    case 'u56'  :
+    case 'u64'  :
+    case 'u72'  :
+    case 'u80'  :
+    case 'u88'  :
+    case 'u96'  :
+    case 'u104' :
+    case 'u112' :
+    case 'u120' :
+    case 'u128' :
+    case 'u136' :
+    case 'u144' :
+    case 'u152' :
+    case 'u160' :
+    case 'u168' :
+    case 'u176' :
+    case 'u184' :
+    case 'u192' :
+    case 'u200' :
+    case 'u208' :
+    case 'u216' :
+    case 'u224' :
+    case 'u232' :
+    case 'u240' :
+    case 'u248' :
+    case 'u256' :
+    case 'i8'   :
+    case 'i16'  :
+    case 'i24'  :
+    case 'i32'  :
+    case 'i40'  :
+    case 'i48'  :
+    case 'i56'  :
+    case 'i64'  :
+    case 'i72'  :
+    case 'i80'  :
+    case 'i88'  :
+    case 'i96'  :
+    case 'i104' :
+    case 'i112' :
+    case 'i120' :
+    case 'i128' :
+    case 'i136' :
+    case 'i144' :
+    case 'i152' :
+    case 'i160' :
+    case 'i168' :
+    case 'i176' :
+    case 'i184' :
+    case 'i192' :
+    case 'i200' :
+    case 'i208' :
+    case 'i216' :
+    case 'i224' :
+    case 'i232' :
+    case 'i240' :
+    case 'i248' :
+    case 'i256' :
+
+      const prefix = fordType.charAt(0)
+      const size = fordType.slice(1, 4)
+
+      let typeIdentifier;
+      let typeString;
+      switch (prefix) {
+        case 'i':
+          typeIdentifier = `t_int${size}`
+          typeString = `int${size}`
+          break;
+        case 'u':
+          typeIdentifier = `t_uint${size}`
+          typeString = `uint${size}`
+          break;
+      }
+
+      return { typeClassification: 'primitive', typeIdentifier, typeString, kind: 'number' }
+  }
+}
+
+const solidityTypeIdentifier = fordType => solidityType(fordType).typeIdentifier
+const solidityTypeString = fordType => solidityType(fordType).typeString
+const solidityKind = fordType => solidityType(fordType).kind
+
 const FordTypes2SolidityTypes = {
   // unsigned integers
   'u8'      : { typeClassification: 'primitive', typeIdentifier: 't_uint8', typeString: 'uint8', kind: 'number' },
@@ -24,7 +121,7 @@ const FordTypes2SolidityTypes = {
 
   // 'listU8'  : { typeIdentifier: 't_array$_t_uint8_$dyn_storage', typeString: 'uint256[] storage ref', kind: 'int32' },
   'bool'    : { typeClassification: 'primitive', typeIdentifier: 't_bool', typeString: 'bool', kind: 'bool' },
-
+  /*
   'address->u256': {
     typeClassification: 'composite',
     typeDescriptions: {
@@ -61,7 +158,7 @@ const FordTypes2SolidityTypes = {
       }
     }
   },
-
+  */
   'string'  : [
     {
       typeClassification: 'primitive',
@@ -108,6 +205,11 @@ const FordTypes2SolidityTypes = {
 }
 
 module.exports = {
-  GetId, FordTypes2SolidityTypes
+  GetId,
+  FordTypes2SolidityTypes,
+  solidityTypeIdentifier,
+  solidityTypeString,
+  solidityKind,
+  solidityType
 }
 
