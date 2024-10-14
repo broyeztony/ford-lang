@@ -1,18 +1,18 @@
-const {GetId, solitidityTypeIdentifier, solitidityTypeString} = require("../utils");
+const {GetId, solidityTypeIdentifier, solidityTypeString} = require("../utils");
 
 function buildMappingAST(mappingTypes, level = 0) {
 
   if (level >= mappingTypes.length - 1) {
     return {
       id: GetId(),
-      name: solitidityTypeString(mappingTypes[level]),
+      name: solidityTypeString(mappingTypes[level]),
       nodeType: "ElementaryTypeName",
       src: "0:0:0",
       typeDescriptions: {
-        typeIdentifier: solitidityTypeIdentifier(mappingTypes[level]),
-        typeString: solitidityTypeString(mappingTypes[level])
+        typeIdentifier: solidityTypeIdentifier(mappingTypes[level]),
+        typeString: solidityTypeString(mappingTypes[level])
       }
-    };
+    }
   }
 
   return {
@@ -21,19 +21,19 @@ function buildMappingAST(mappingTypes, level = 0) {
     keyNameLocation: "-1:-1:-1",
     keyType: {
       id: GetId(),
-      name: solitidityTypeString(mappingTypes[level]),
+      name: solidityTypeString(mappingTypes[level]),
       nodeType: "ElementaryTypeName",
       src: "0:0:0",
       typeDescriptions: {
-        typeIdentifier: solitidityTypeIdentifier(mappingTypes[level]),
-        typeString: solitidityTypeString(mappingTypes[level])
+        typeIdentifier: solidityTypeIdentifier(mappingTypes[level]),
+        typeString: solidityTypeString(mappingTypes[level])
       }
     },
     nodeType: "Mapping",
     src: "0:0:0",
     typeDescriptions: {
-      typeIdentifier: `t_mapping$_${ solitidityTypeIdentifier(mappingTypes[level]) }$_${ mappingTypes.map(_ => solitidityTypeIdentifier(_)).slice(level + 1).join('_$_t_') }_$`,
-      typeString: `mapping(${ solitidityTypeString(mappingTypes[level]) } => ${mappingTypes.map(_ => solitidityTypeString(_)).slice(level + 1).join(' => ')})`
+      typeIdentifier: `t_mapping$_${ solidityTypeIdentifier(mappingTypes[level]) }$_${ mappingTypes.map(_ => solidityTypeIdentifier(_)).slice(level + 1).join('_$_t_') }_$`,
+      typeString: `mapping(${ solidityTypeString(mappingTypes[level]) } => ${mappingTypes.map(_ => solidityTypeString(_)).slice(level + 1).join(' => ')})`
     },
     valueName: "",
     valueNameLocation: "-1:-1:-1",
@@ -46,10 +46,9 @@ function makeMapping(solVarDeclaration, varType) {
   // `address->u8` => ['address', 'u8']
   const types = varType.split('->');
 
-  solVarDeclaration.typeDescriptions.typeIdentifier = `t_mapping$_${types.map(_ => solitidityTypeIdentifier(_)).join('_$_')}_$`
-  solVarDeclaration.typeDescriptions.typeString = `mapping(${types.map(_ => solitidityTypeString(_)).join(' => ')})`
+  solVarDeclaration.typeDescriptions.typeIdentifier = `t_mapping$_${types.map(_ => solidityTypeIdentifier(_)).join('_$_')}_$`
+  solVarDeclaration.typeDescriptions.typeString = `mapping(${types.map(_ => solidityTypeString(_)).join(' => ')})`
   solVarDeclaration.typeName = buildMappingAST(types)
-  console.log('@solVarDeclaration', solVarDeclaration)
 }
 
 module.exports = {

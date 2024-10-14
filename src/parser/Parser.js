@@ -175,7 +175,14 @@ class Parser {
     let returnType
     if (this._lookahead.type === ':') {
       this._eat(':');
-      returnType = this.Identifier()
+      let ti = this.TypeIdentifier()
+
+      // TODO: data location for return parameters
+      returnType = {
+        name: 'res',
+        type: ti.name,
+        genericType: ti.genericType,
+      }
     }
 
     const body = this.BlockStatement();
@@ -302,6 +309,7 @@ class Parser {
   }
 
   ForStatementInit() {
+
     if(this._lookahead.type === 'let') {
       return this.VariableStatementInit()
     }
@@ -367,10 +375,19 @@ class Parser {
     const id = this.Identifier()
 
     let varType
-    if (this._lookahead.type === ':') {
+    // if (this._lookahead.type === ':') {
       this._eat(':');
       varType = this.TypeIdentifier()
-    }
+    // }
+    // else { // TODO: handle case where there is no type identifier and why we want to allow it
+      // In for statement, we want to allow
+      // ```let k = 0 to 10 {}``` (not enforcing to statically type k. In that case it becomes a u256)
+      // varType = {
+        // type: 'TypeIdentifier',
+        // genericType: 'IDENTIFIER',
+        // name: 'u256'
+      // }
+    // }
 
     const initializer = this._lookahead.type !== ';' && this._lookahead.type !== ','
       ? this.VariableInitializer()

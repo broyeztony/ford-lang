@@ -7,10 +7,10 @@ const {AddressLiteralValue} = require("./AddressLiteral");
 function Sol_StateVariableDeclaration (node, metadata) {
 
   const {varName, varType, initializer} = node.declarations[0]
-  console.log('@varName', varName, 'varType', varType)
+  // console.log('@varName', varName, 'varType', varType)
 
   let solVarDeclaration = Sol_VariableDeclaration(node.declarations[0], metadata, true)
-  console.log('@initializer', initializer)
+  // console.log('@initializer', initializer)
 
   // TODO: handle solVarDeclaration.typeName.stateMutability from metadata spec file
   solVarDeclaration.typeName.stateMutability = 'nonpayable'

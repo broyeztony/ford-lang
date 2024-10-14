@@ -116,7 +116,7 @@ function Sol_VariableDeclaration(node, metadata, isStateVar) {
       makeMapping(solVarDeclaration, varType)
       break
     case 'LIST':
-
+      // TODO: implement
       break
   }
 

@@ -141,24 +141,7 @@ function CallExpressionValue(initializer) {
           break
       }
       break
-    case 'address':
 
-      const addressVal = initializer.arguments[0].value
-      buffer.typeDescriptions.typeIdentifier = `t_address`
-      buffer.typeDescriptions.typeString = `address`
-      buffer.value = `${addressVal}`
-      break
-    case 'address->u256':
-
-      let solTypes = FordTypes2SolidityTypes['address->u256']
-      delete buffer['kind']
-      buffer.typeDescriptions = solTypes.typeDescriptions
-      buffer.typeName = solTypes.typeName
-      buffer.typeName.id = GetId()
-      buffer.typeName.keyType['id'] = GetId()
-      buffer.typeName.valueType['id'] = GetId()
-
-      break
   }
 
   return buffer

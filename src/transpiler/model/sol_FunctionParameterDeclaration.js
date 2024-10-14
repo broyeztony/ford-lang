@@ -1,18 +1,20 @@
 const { GetId} = require("./../utils");
-const {FordTypes2SolidityTypes} = require("../utils");
+const {FordTypes2SolidityTypes, solidityKind, solidityTypeIdentifier, solidityTypeString} = require("../utils");
+const {makeMapping} = require("./HashMaps");
 
 /**
  * @param node { name: { type: 'Identifier', name: 'x' }, type: { type: 'Identifier', name: 'u8' } }
  */
 function Sol_FunctionParameterDeclaration(node, metadata) {
 
-  const { name, type, dataLocation } = node
+  // console.log('@Sol_FunctionParameterDeclaration', node)
+  const { name, type: fordType, genericType, dataLocation } = node
 
   let solParamDeclaration = {
     constant: false,
     id: GetId(),
     mutability: 'mutable',
-    name: node.name.name,
+    name,
     nameLocation: source,
     nodeType: 'VariableDeclaration',
     scope: currentScope++,
@@ -30,8 +32,24 @@ function Sol_FunctionParameterDeclaration(node, metadata) {
     visibility: 'internal'
   }
 
-  const fordTypeName = node.type.name
+  if (genericType === 'IDENTIFIER') {
+    console.log('@fordTypeName', fordType)
+    console.log('@solidityTypeIdentifier', solidityTypeIdentifier(fordType))
+    console.log('@solitidityTypeString', solidityTypeString(fordType))
+    console.log('@solitidityKind', solidityKind(fordType))
+    console.log('\n')
 
+    solParamDeclaration.typeDescriptions.typeIdentifier = solidityTypeIdentifier(fordType)
+    solParamDeclaration.typeDescriptions.typeString = solidityTypeString(fordType)
+    solParamDeclaration.typeName.name =  solidityTypeString(fordType)
+    solParamDeclaration.typeName.typeDescriptions.typeIdentifier = solidityTypeIdentifier(fordType)
+    solParamDeclaration.typeName.typeDescriptions.typeString = solidityTypeString(fordType)
+
+  } else {
+    makeMapping(solParamDeclaration, fordType)
+  }
+
+  /*
   let solTypes = FordTypes2SolidityTypes[fordTypeName]
 
   // string case
@@ -54,6 +72,7 @@ function Sol_FunctionParameterDeclaration(node, metadata) {
     solParamDeclaration.typeDescriptions.typeString = solTypes.typeString
     solParamDeclaration.typeName.name = solTypes.typeString
   }
+  */
 
   return solParamDeclaration
 }

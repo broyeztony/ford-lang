@@ -71,11 +71,7 @@ function FunctionDeclaration(node, metadata) {
 
   // handle return parameters
   if (node.returnType) {
-    const returnTypeInput = {
-      name: { name: '', type: 'Identifier' },
-      type: node.returnType
-    }
-    const solFuncReturnParams = Sol_FunctionParameterList([returnTypeInput], metadata)
+    const solFuncReturnParams = Sol_FunctionParameterList([node.returnType], metadata)
     fd.returnParameters = solFuncReturnParams
   }
 

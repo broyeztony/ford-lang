@@ -11,6 +11,8 @@ function solidityType(fordType) {
       return { typeClassification: 'primitive', typeIdentifier: 't_bool', typeString: 'bool', kind: 'bool' }
     case 'address':
       return { typeClassification: 'primitive', typeIdentifier: 't_address', typeString: 'address', kind: 'number' }
+    case 'string': // TODO: handle strings properly
+      return { typeClassification: 'primitive', typeIdentifier: 't_string_storage_ptr', typeString: 'string', kind: 'string' }
     case 'u8'   :
     case 'u16'  :
     case 'u24'  :
@@ -93,13 +95,12 @@ function solidityType(fordType) {
       }
 
       return { typeClassification: 'primitive', typeIdentifier, typeString, kind: 'number' }
-    // TODO: handle strings
   }
 }
 
-const solitidityTypeIdentifier = fordType => solidityType(fordType).typeIdentifier
-const solitidityTypeString = fordType => solidityType(fordType).typeString
-const solitidityKind = fordType => solidityType(fordType).kind
+const solidityTypeIdentifier = fordType => solidityType(fordType).typeIdentifier
+const solidityTypeString = fordType => solidityType(fordType).typeString
+const solidityKind = fordType => solidityType(fordType).kind
 
 const FordTypes2SolidityTypes = {
   // unsigned integers
@@ -206,9 +207,9 @@ const FordTypes2SolidityTypes = {
 module.exports = {
   GetId,
   FordTypes2SolidityTypes,
-  solitidityTypeIdentifier,
-  solitidityTypeString,
-  solitidityKind,
+  solidityTypeIdentifier,
+  solidityTypeString,
+  solidityKind,
   solidityType
 }
 
