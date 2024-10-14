@@ -11,11 +11,11 @@ const Controller = (programFile) => {
 
   const transpiler = new Transpiler(inputAst, {})
   const outputAst = transpiler.transpile()
-  console.log(JSON.stringify(outputAst, null, 2))
+  // console.log(JSON.stringify(outputAst, null, 2))
 
-  const codegen = new Codegen()
-  const solidityCode = codegen.generate(outputAst)
-  console.log(solidityCode)
+  // const codegen = new Codegen()
+  // const solidityCode = codegen.generate(outputAst)
+  // console.log(solidityCode)
 }
 
 Controller(process.argv[2])

@@ -13,7 +13,7 @@ function StringLiteralTypings(solVarDecl) {
 
 function StringLiteralValue(value) {
 
-  let buffer = { typeDescriptions: {} }
+  let buffer = {}
 
   buffer.id = GetId()
   buffer.hexValue = ''
@@ -24,6 +24,7 @@ function StringLiteralValue(value) {
   buffer.nodeType = 'Literal'
   buffer.kind = 'string'
   buffer.src = source
+  buffer.typeDescriptions = {}
   buffer.typeDescriptions.typeIdentifier = `t_stringliteral`
   buffer.typeDescriptions.typeString = `literal_string "${value}"`
   buffer.value = `${value}`

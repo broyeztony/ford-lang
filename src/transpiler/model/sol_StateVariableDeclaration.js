@@ -14,7 +14,9 @@ function Sol_StateVariableDeclaration (node, metadata) {
   solVarDeclaration.typeName.stateMutability = 'nonpayable'
 
   // handle the `value` field if initializer.value is defined or initializer.arguments is not empty
-  if (initializer.hasOwnProperty('value') || (initializer.arguments && initializer.arguments.length > 0)) {
+  let isMapping = false
+  const initializerHasArgs = initializer.arguments && initializer.arguments.length >= 0
+  if (initializer.hasOwnProperty('value') || initializerHasArgs) {
     let solVarValue;
     switch (initializer.type) {
       case 'StringLiteral'  :
@@ -31,9 +33,21 @@ function Sol_StateVariableDeclaration (node, metadata) {
         break
       case 'CallExpression' :
         solVarValue = CallExpressionValue(initializer);
+
+        if (initializer.callee.type === 'mapping') {
+          isMapping = true
+        }
+
         break
     }
-    solVarDeclaration.value = solVarValue
+
+    if (isMapping) {
+      solVarDeclaration.typeDescriptions = solVarValue.typeDescriptions
+      solVarDeclaration.typeName = solVarValue.typeName
+    } else {
+      solVarDeclaration.value = solVarValue
+    }
+
   }
 
   return solVarDeclaration

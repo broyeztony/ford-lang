@@ -5,6 +5,7 @@ const cors = require('cors');
 const { Parser } = require('./../parser/Parser');
 const { Transpiler } = require('./../transpiler/Transpiler');
 const { Codegen } = require('./../codegen/codegen');
+const solc = require('solc');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -26,13 +27,53 @@ app.post('/transpile', (req, res) => {
 
     const transpiler = new Transpiler(inputAst, {});
     const outputAst = transpiler.transpile();
+    // console.log('@outputAst', JSON.stringify(outputAst, null, 2))
 
     const codegen = new Codegen();
     const solidityCode = codegen.generate(outputAst);
+    console.log('@solidityCode', solidityCode)
 
-    console.log(solidityCode)
+    // binary
+    const input = {
+      language: 'Solidity',
+      sources: {
+        'playground.sol': {
+          content: solidityCode
+        }
+      },
+      settings: {
+        outputSelection: {
+          '*': {
+            '*': ['*']
+          }
+        }
+      }
+    };
 
-    res.json({ solidity: solidityCode });
+    let compiled;
+    try {
+      compiled = solc.compile(JSON.stringify(input))
+    } catch (e) {
+      console.error(e)
+    }
+
+    // console.log('@output.contracts', output.contracts)
+    const output = JSON.parse(compiled);
+
+    // `output` here contains the JSON output as specified in the documentation
+    let binary = ''
+    for (var contractName in output.contracts['playground.sol']) {
+      // console.log(
+      //   contractName +
+      //   ': ' +
+      //   output.contracts['playground.sol'][contractName].evm.bytecode.object
+      // );
+      binary = output.contracts['playground.sol'][contractName].evm.bytecode.object
+    }
+    //
+    // console.log(solidityCode)
+
+    res.json({ solidity: solidityCode, binary });
   } catch (error) {
     console.error('Transpilation error:', error);
     res.status(500).json({ error: 'Transpilation failed', details: error.message });
