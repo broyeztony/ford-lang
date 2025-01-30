@@ -1,51 +1,54 @@
-Hello ♪♪
+
+![](docs/android-chrome-192x192.png)
+
+The F0/rd Smart Contract Programming Language For The EVM 
 
 ![Ford Playground Screenshot](docs/playground.png)
 
-## Ford types
+## F0/rd types
 
 ### Signed and unsigned integers
-```ford
+```F0/rd
 'i8', 'i16', 'i24', 'i32', 'i40', 'i48', 'i56', 'i64',
 'i72', 'i80', 'i88', 'i96', 'i104', 'i112', 'i120', 'i128',
 'i136', 'i144', 'i152', 'i160', 'i168', 'i176', 'i184', 'i192',
 'i200', 'i208', 'i216', 'i224', 'i232', 'i240', 'i248', 'i256'
 ```
-```ford
+```F0/rd
 'u8', 'u16', 'u24', 'u32', 'u40', 'u48', 'u56', 'u64',
 'u72', 'u80', 'u88', 'u96', 'u104', 'u112', 'u120', 'u128',
 'u136', 'u144', 'u152', 'u160', 'u168', 'u176', 'u184', 'u192',
 'u200', 'u208', 'u216', 'u224', 'u232', 'u240', 'u248', 'u256'
 ```
 Example
-```ford
+```F0/rd
 let y0    : u8        = 200;
 let y1    : u16       = 2000;
 let x0    : i8        = -10;
 ```
 
 ### Strings
-```ford
-let s   : string    = "hello Ford!";
+```F0/rd
+let s   : string    = "hello F0/rd!";
 ```
 
 ### Addresses
-```ford
+```F0/rd
 let addr  : address   = "0xCA35b7d915458EF540aDe6068dFe2F44E8fa733c";
 ```
 
 ### Booleans
-```ford
+```F0/rd
 let b     : bool      = false;
 ```
 
 ### Lists
-```ford
+```F0/rd
 let li    : list[i32];
 ```
 
 ### Hashmaps
-```ford
+```F0/rd
 let mm    : address->u256; 
 ```
 
@@ -53,12 +56,12 @@ let mm    : address->u256;
 
 ## Command line transpilation 
 
-You start with (playground.ford): 
+You start with (playground.f0): 
 
 ```ford
 contract Playground;
 
-let- s    : string    = "hello Ford!";
+let- s    : string    = "hello F0/rd!";
 let owner : address;
 let addr  : address   = "0xCA35b7d915458EF540aDe6068dFe2F44E8fa733c";
 let b     : bool      = false;
@@ -101,7 +104,7 @@ You end up with (notice that return statements are not transpiled yet...)
 pragma solidity ^0.8.24;
 
 contract Playground {
-    string private s = "hello Ford!";
+    string private s = "hello F0/rd!";
     address public owner;
     address public addr = 0xCA35b7d915458EF540aDe6068dFe2F44E8fa733c;
     bool public b = false;
@@ -143,7 +146,7 @@ npm run serve
 ```
 => 
 ```shell
-Ford transpiler server running on port 3000
+F0/rd transpiler server running on port 3000
 ```
 
 Then send a POST request to the `/transpile` API endpoint
@@ -152,7 +155,6 @@ Then send a POST request to the `/transpile` API endpoint
 curl -X POST \
   http://localhost:3000/transpile \
   -H "Content-Type: application/json" \
-  -d "{\"code\": $(cat playground.ford | jq -Rs .)}"
+  -d "{\"code\": $(cat playground.f0 | jq -Rs .)}"
 ```
 
-That's it!
