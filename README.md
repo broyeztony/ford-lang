@@ -1,7 +1,7 @@
 
 ![](docs/android-chrome-192x192.png)
 
-#The F0/rd Smart Contract Programming Language For The EVM 
+# The F0/rd Smart Contract Programming Language For The EVM 
 
 
 ![Ford Playground Screenshot](docs/playground.png)
