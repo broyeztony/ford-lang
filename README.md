@@ -60,35 +60,36 @@ let mm    : address->u256;
 You start with (playground.f0): 
 
 ```ford
+// Enter your F0/rd code here
 contract Playground;
 
-let- s    : string    = "hello F0/rd!";
-let owner : address;
-let addr  : address   = "0xCA35b7d915458EF540aDe6068dFe2F44E8fa733c";
-let b     : bool      = false;
-let y0    : u8        = 200;
-let y1    : u16       = 2000;
-let x0    : i8        = -10;
+let hashmap : address->u32;
 
-let mm    : address->u256; 
-let li    : list[i32];
-
-// Public
-def somePublicDef {}
-
-// External
-def/ lambda {
-    for let k = 0 to 10 {}
+def lambda {
+    for let k: u8 = 0 to 10 /* step 1 (default) */ {
+        /* do something */
+    }
 }
 
-// Private
+/**
+ * ^ x: parameter located in calldata
+ * ∞ m: parameter located in storage
+ * y: parameter located in memory (default)
+ */
 def- symbols (^ x: string, ∞ m: address->u256, y: i16): u8 {
-    return 1;
+    -> 42;
 }
 
-// Payable
-def$ payableDef (amount: i16) {
-    return 10;
+def/ externalDef: u16 {
+    -> simpleInt();
+}
+
+def- simpleInt: u16 {
+	-> 2048;
+}
+
+def$ p(amount: i24): bool {
+    -> true;
 }
 ```
 
@@ -97,7 +98,7 @@ You do
 npm run compile
 ```
 
-You end up with (notice that return statements are not transpiled yet...) 
+You end up with 
 
 ```solidity
 // playground.sol
@@ -105,28 +106,27 @@ You end up with (notice that return statements are not transpiled yet...)
 pragma solidity ^0.8.24;
 
 contract Playground {
-    string private s = "hello F0/rd!";
-    address public owner;
-    address public addr = 0xCA35b7d915458EF540aDe6068dFe2F44E8fa733c;
-    bool public b = false;
-
-
-    uint8 public y0 = 200;
-    uint16 public y1 = 2000;
-    int8 public x0 = -10;
-
-    mapping(address => uint256) public mm;
-    int32[] public li;
-
-    function somePublicDef() public {}
-
-    function lambda() external {
-        for (uint256 k = 0; k < 10; k++) {}
+    mapping(address => uint32) public hashmap;
+    
+    function lambda() public {
+        for (uint8 k = 0; k < 10; k++) {}
     }
-
-    function symbols(string calldata x, mapping(address => uint) storage m, int16 y) private returns (uint8 ) {}
-
-    function payableDef(int16 amount) public payable {}
+    
+    function symbols(string calldata x, mapping(address => uint256) storage m, int16 y) private returns (uint8  res) {
+        return 42;
+    }
+    
+    function externalDef() external returns (uint16  res) {
+        return simpleInt();
+    }
+    
+    function simpleInt() private returns (uint16  res) {
+        return 2048;
+    }
+    
+    function p(int24 amount) public payable returns (bool  res) {
+        return true;
+    }
 }
 ```
 
@@ -137,7 +137,25 @@ contract Playground {
 
 ### Bytecode
 ```shell
-608060405273ca35b7d915458ef540ade6068dfe2f44e8fa733c60015f6101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055506040518060400160405280600b81526020017f68656c6c6f20466f7264210000000000000000000000000000000000000000008152506002908161009c91906104bc565b505f60035f6101000a81548160ff02191690831515021790555060c8600360016101000a81548160ff021916908360ff1602179055506107d0600360026101000a81548161ffff021916908361ffff160217905550614e20600360046101000a81548163ffffffff021916908363ffffffff16021790555062030d40600360086101000a81548167ffffffffffffffff021916908367ffffffffffffffff160217905550621e8480600360106101000a8154816fffffffffffffffffffffffffffffffff02191690836fffffffffffffffffffffffffffffffff1602179055506301312d00600455600a60055f6101000a8154
+0x6080604052348015600e575f5ffd5b5061030e8061001c5f395ff3fe60806040526004361061003e575f3560
+e01c806355d788e11461004257806391432a3414610072578063dad0be611461009c578063f02be3b4146100b2
+575b5f5ffd5b61005c60048036038101906100579190610189565b6100ee565b60405161006991906101ce565b
+60405180910390f35b34801561007d575f5ffd5b506100866100f8565b6040516100939190610203565b604051
+80910390f35b3480156100a7575f5ffd5b506100b0610106565b005b3480156100bd575f5ffd5b506100d86004
+8036038101906100d39190610276565b610127565b6040516100e591906102bf565b60405180910390f35b5f60
+019050919050565b5f610101610146565b905090565b5f5f90505b600a8160ff16101561012457808060010191
+505061010b565b50565b5f602052805f5260405f205f915054906101000a900463ffffffff1681565b5f610800
+905090565b5f5ffd5b5f8160020b9050919050565b61016881610153565b8114610172575f5ffd5b50565b5f81
+3590506101838161015f565b92915050565b5f6020828403121561019e5761019d61014f565b5b5f6101ab8482
+8501610175565b91505092915050565b5f8115159050919050565b6101c8816101b4565b82525050565b5f6020
+820190506101e15f8301846101bf565b92915050565b5f61ffff82169050919050565b6101fd816101e7565b82
+525050565b5f6020820190506102165f8301846101f4565b92915050565b5f73ffffffffffffffffffffffffff
+ffffffffffffff82169050919050565b5f6102458261021c565b9050919050565b6102558161023b565b811461
+025f575f5ffd5b50565b5f813590506102708161024c565b92915050565b5f6020828403121561028b5761028a
+61014f565b5b5f61029884828501610262565b91505092915050565b5f63ffffffff82169050919050565b6102
+b9816102a1565b82525050565b5f6020820190506102d25f8301846102b0565b9291505056fea2646970667358
+2212202ecbeacf46e1b066916e9404ba6091031a3731f96f243555c110c761f9abf6a064736f6c634300081b00
+33
 ```
 
 ## server-side transpilation
