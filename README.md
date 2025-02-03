@@ -85,7 +85,7 @@ def/ externalDef: u16 {
 }
 
 def- simpleInt: u16 {
-	-> 2048;
+    -> 2048;
 }
 
 def$ p(amount: i24): bool {
