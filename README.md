@@ -20,8 +20,8 @@ Our vision is to simplify EVM development by offering:
 
 In F0/rd, a smart contract consists of two key components:
 
-1. **.f0 file**: Contains the main logic of your smart contract.
-2. **.meta file**: Specifies additional metadata for state variables, functions, and events, including:
+1. **.f0** file: Contains the main logic of your smart contract.
+2. **.meta** file: Specifies additional metadata for state variables, functions, and events, including:
     - Schema
     - Scope
     - Visibility
