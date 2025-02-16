@@ -6,21 +6,28 @@
 
 ![Ford Playground Screenshot](docs/playground.png)
 
-## Why F0/rd ?
+## Why F0/rd?
 
-Solidity and Vyper are the main smart contract programming languange for
-the EVM today.
-F0/rd is coming as a third alternative with a vision to make it easier to 
-develop for the EVM. We aim to achieve this by proposing a language that is 
-less verbose, easier to learn and providing modern language constructs, defaults and 
-developer-friendly tooling like F0/rd Simulate.
+While Solidity and Vyper are currently the primary smart contract programming languages for the EVM, F0/rd aims to provide a fresh approach as an additional option for EVM development. 
+Our vision is to simplify EVM development by offering:
 
-## Smart contract: .f0 and .meta files
+- A less verbose syntax
+- An easier learning curve
+- Modern language constructs and sensible defaults
+- Developer-friendly tooling, such as F0/rd Simulate
 
-With F0/rd, a smart contract is composed of a .f0 file and a .meta file.
-.f0 files contains the main logic of your smart contract while the .meta file 
-contains additional metadata that specify the relevant metadata of the state variables, 
-functions and events: schema, scope, visibility and modifiers.
+## Smart Contracts: .f0 and .meta Files
+
+In F0/rd, a smart contract consists of two key components:
+
+1. **.f0 file**: Contains the main logic of your smart contract.
+2. **.meta file**: Specifies additional metadata for state variables, functions, and events, including:
+    - Schema
+    - Scope
+    - Visibility
+    - Modifiers
+
+This separation allows for cleaner code organization and improved readability, making it easier to develop and maintain smart contracts.
 
 Example: 
 **playground.f0**
