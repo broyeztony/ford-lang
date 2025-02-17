@@ -89,8 +89,8 @@ for let k: u8 = 0 to 10 /* step 1 (default) */ {
 } 
 ```
 
-The above points are just a few examples to demonstrate how F0/rd envision to 
-simplify the developer experience.
+The above points solely based on the above `playground` contract example are just a few examples to illustrate how F0/rd envision to 
+simplify the developer experience. There is much more to F0/rd than just those.
 
 ## F0/rd types
 
