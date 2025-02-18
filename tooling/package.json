@@ -1,0 +1,10 @@
+{
+  "name": "simuleth",
+  "version": "0.0.1",
+  "dependencies": {
+    "web3": "^4.16.0",
+    "ethers": "^6.13.1",
+    "axios": "^1.7.2"
+  },
+  "type": "module"
+}
