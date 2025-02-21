@@ -14,7 +14,7 @@ Our vision is to simplify EVM development by offering:
 - A less verbose syntax
 - An easier learning curve
 - Modern language constructs and sensible defaults
-- Developer-friendly tooling, such as F0/rd Simulate
+- Developer-friendly tooling, such as ![F0/rd SIMULΞ](tooling/SIMULATE.md)
 
 ## Smart Contracts: .f0 and .meta Files
 
