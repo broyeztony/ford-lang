@@ -28,7 +28,7 @@ app.post('/transpile', (req, res) => {
 
     const transpiler = new Transpiler(inputAst, {});
     const outputAst = transpiler.transpile();
-    console.log('@outputAst', JSON.stringify(outputAst, null, 2))
+    console.log('@outputAst', JSON.stringify(outputAst, null, 2).slice(0, 2000))
 
     const codegen = new Codegen();
     const solidityCode = codegen.generate(outputAst);

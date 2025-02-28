@@ -1,6 +1,5 @@
 const {GetId} = require("../utils");
 
-
 function AddressLiteralTypings(solVarDecl) {
 
   solVarDecl.typeDescriptions.typeIdentifier = 't_address'

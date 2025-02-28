@@ -4,13 +4,12 @@ const {SolUnaryOperation} = require("./sol_UnaryOperation");
 const {StringLiteralValue} = require("./StringLiteral");
 const {BooleanLiteralValue} = require("./BooleanLiteral");
 
-
 function CallExpression(node, parentFn, metadata) {
 
   let typeIdentifier, typeString;
   const fordType = parentFn.returnType.type
 
-  console.log('@CallExpression', JSON.stringify(node, null, 2), JSON.stringify(parentFn, null, 2))
+  // console.log('@CallExpression', JSON.stringify(node, null, 2), JSON.stringify(parentFn, null, 2))
 
   typeIdentifier = solidityTypeIdentifier(fordType)
   typeString = solidityTypeString(fordType)
@@ -65,7 +64,7 @@ function CallExpression(node, parentFn, metadata) {
   }
 
   expression.typeDescriptions.typeIdentifier = `t_function_${parentFn.visibility}_${parentFn.stateMutability}$__$returns$_${typeString}_$`
-  console.log('@expression.typeDescriptions.typeIdentifier', expression.typeDescriptions.typeIdentifier)
+  // console.log('@expression.typeDescriptions.typeIdentifier', expression.typeDescriptions.typeIdentifier)
   // TODO: handle function parameters
   expression.typeDescriptions.typeString = `function () returns (${typeIdentifier})`
 

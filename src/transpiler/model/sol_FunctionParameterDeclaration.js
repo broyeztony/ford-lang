@@ -33,11 +33,11 @@ function Sol_FunctionParameterDeclaration(node, metadata) {
   }
 
   if (genericType === 'IDENTIFIER') {
-    console.log('@fordTypeName', fordType)
-    console.log('@solidityTypeIdentifier', solidityTypeIdentifier(fordType))
-    console.log('@solitidityTypeString', solidityTypeString(fordType))
-    console.log('@solitidityKind', solidityKind(fordType))
-    console.log('\n')
+    // console.log('@fordTypeName', fordType)
+    // console.log('@solidityTypeIdentifier', solidityTypeIdentifier(fordType))
+    // console.log('@solitidityTypeString', solidityTypeString(fordType))
+    // console.log('@solitidityKind', solidityKind(fordType))
+    // console.log('\n')
 
     solParamDeclaration.typeDescriptions.typeIdentifier = solidityTypeIdentifier(fordType)
     solParamDeclaration.typeDescriptions.typeString = solidityTypeString(fordType)

@@ -2,7 +2,7 @@ const {GetId, solidityTypeIdentifier, solidityTypeString, solidityKind} = requir
 
 function ForStatement(node, metadata) {
 
-  console.log('@ ForStatement', JSON.stringify(node, null, 2))
+  // console.log('@ ForStatement', JSON.stringify(node, null, 2))
 
   const declaration = node.init.declarations[0]
   const initializer = declaration.initializer
