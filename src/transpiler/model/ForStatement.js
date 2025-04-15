@@ -1,36 +1,8 @@
-const {GetId} = require("./../utils");
+const {GetId, solidityTypeIdentifier, solidityTypeString, solidityKind} = require("../utils")
 
-/**
-{
-  "type": "ForStatement",
-  "init": {
-    "type": "VariableStatement",
-    "stateVariable": false,
-    "declarations": [
-      {
-        "type": "VariableDeclaration",
-        "id": {
-          "type": "Identifier",
-          "name": "i"
-        },
-        "initializer": {
-          "type": "NumericLiteral",
-          "value": 0
-        }
-      }
-    ]
-  },
-  "test": {
-    "type": "NumericLiteral",
-    "value": 10
-  },
-  "body": {
-    "type": "BlockStatement",
-    "body": []
-  }
-}
-*/
 function ForStatement(node, metadata) {
+
+  // console.log('@ ForStatement', JSON.stringify(node, null, 2))
 
   const declaration = node.init.declarations[0]
   const initializer = declaration.initializer
@@ -39,7 +11,7 @@ function ForStatement(node, metadata) {
     throw new SyntaxError('The node is not a valid ForStatement.')
   }
 
-  const loopIdentifier = declaration.id.name
+  const loopIdentifier = declaration.varName
   const initializerValue = initializer.value
 
   if (!(node.test.type === 'NumericLiteral' || node.test.type === 'Identifier')) {
@@ -64,7 +36,12 @@ function ForStatement(node, metadata) {
 
 function InitializationExpression(node) {
 
-  const loopIdentifier = node.init.declarations[0].id.name
+  const declaration = node.init.declarations[0]
+  const loopIdentifier = declaration.varName
+
+  const typeIdentifier = solidityTypeIdentifier(declaration.varType)
+  const typeString = solidityTypeString(declaration.varType)
+
   const initializationExpression = {
     assignments: [],
     declarations: [{
@@ -79,17 +56,17 @@ function InitializationExpression(node) {
       stateVariable : false,
       storageLocation : 'default',
       typeDescriptions : {
-        typeIdentifier : 't_uint256',
-        typeString : 'uint256'
+        typeIdentifier,
+        typeString
       },
       typeName: {
         id: GetId(),
-        name: 'uint256',
+        name: typeString,
         nodeType: 'ElementaryTypeName',
         src : '0:0:0',
         typeDescriptions: {
-          typeIdentifier : 't_uint256',
-          typeName: 'uint256',
+          typeIdentifier,
+          typeName: typeString,
         },
         visibility: 'internal',
       }
@@ -105,31 +82,41 @@ function InitializationExpression(node) {
 
 function InitialValue(node) {
 
+  const declaration = node.init.declarations[0]
+  const loopIdentifier = declaration.varName
+  const kind = solidityKind(declaration.varType).kind
+
   return {
     hexValue: '',
     id: GetId(),
     isConstant : false,
     isLValue : false,
     isPure : true,
-    kind : "number",
+    kind,
     lValueRequested: false,
     nodeType : "Literal",
     src : '0:0:0',
     typeDescriptions: {
-      typeIdentifier : `t_rational_${node.init.declarations[0].initializer.value}_by_1`,
-      typeString : `int_const ${node.init.declarations[0].initializer.value}`
+      typeIdentifier : `t_rational_${declaration.initializer.value}_by_1`,
+      typeString : `int_const ${declaration.initializer.value}`
     },
-    value: `${node.init.declarations[0].initializer.value}`
+    value: `${declaration.initializer.value}`
   }
 }
 
 function Condition(node) {
 
+  const declaration = node.init.declarations[0]
+  const loopIdentifier = declaration.varName
+
+  const typeIdentifier = solidityTypeIdentifier(declaration.varType)
+  const typeString = solidityTypeString(declaration.varType)
+
   const condition = {
     id: GetId(),
     commonType: {
-      typeIdentifier : 't_uint256',
-      typeString : 'uint256'
+      typeIdentifier,
+      typeString
     },
     leftExpression: LeftExpression(node),
     rightExpression: RightExpression(node),
@@ -151,7 +138,11 @@ function Condition(node) {
 
 function LeftExpression(node) {
 
-  const loopIdentifier = node.init.declarations[0].id.name
+  const declaration = node.init.declarations[0]
+  const loopIdentifier = declaration.varName
+  const typeIdentifier = solidityTypeIdentifier(declaration.varType)
+  const typeString = solidityTypeString(declaration.varType)
+
   return {
     id: GetId(),
     name: loopIdentifier,
@@ -160,24 +151,19 @@ function LeftExpression(node) {
     overloadedDeclarations: [],
     referencedDeclaration: 0,
     typeDescriptions: {
-      typeIdentifier : 't_uint256',
-      typeString : 'uint256'
+      typeIdentifier,
+      typeString
     }
   }
 }
 
-/*
-{
-  "type": "NumericLiteral",
-  "value": 10
-}
-or
-{
-  "type": "Identifier",
-  "name": "n"
-}
-*/
 function RightExpression(node) {
+
+  const declaration = node.init.declarations[0]
+  const loopIdentifier = declaration.varName
+  const typeIdentifier = solidityTypeIdentifier(declaration.varType)
+  const typeString = solidityTypeString(declaration.varType)
+  const kind = solidityKind(declaration.varType)
 
   const rhs = {
     id : GetId(),
@@ -190,7 +176,7 @@ function RightExpression(node) {
       rhs.isConstant = false
       rhs.isLValue = false
       rhs.isPure = true
-      rhs.kind = 'number'
+      rhs.kind = kind
       rhs.lValueRequested = false
       rhs.nodeType = 'Literal'
       rhs.typeDescriptions = {
@@ -205,8 +191,8 @@ function RightExpression(node) {
         rhs.overloadedDeclarations = []
         rhs.referencedDeclaration = 0
         rhs.typeDescriptions = {
-          typeIdentifier: 't_uint256',
-          typeString: 'uint256'
+          typeIdentifier,
+          typeString
         }
       break
     default:
@@ -217,6 +203,7 @@ function RightExpression(node) {
 }
 
 function LoopExpression(node) {
+
   return {
     expression: Expression(node),
     id: GetId(),
@@ -227,7 +214,11 @@ function LoopExpression(node) {
 
 function Expression(node) {
 
-  const loopIdentifier = node.init.declarations[0].id.name
+  const declaration = node.init.declarations[0]
+  const loopIdentifier = declaration.varName
+  const typeIdentifier = solidityTypeIdentifier(declaration.varType)
+  const typeString = solidityTypeString(declaration.varType)
+
   return {
     id: GetId(),
     isConstant: false,
@@ -245,14 +236,14 @@ function Expression(node) {
       overloadedDeclarations: [],
       src: source,
       typeDescriptions: {
-        typeIdentifier : 't_uint256',
-        typeString : 'uint256'
+        typeIdentifier,
+        typeString
       },
       referencedDeclaration: 0 // TODO: check this
     },
     typeDescriptions: {
-      typeIdentifier : 't_uint256',
-      typeString : 'uint256'
+      typeIdentifier,
+      typeString
     }
   }
 }

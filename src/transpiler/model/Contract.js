@@ -31,6 +31,8 @@ function Contract(node, metadata) {
 
 function Nodes (node, metadata) {
   const outputNodes = []
+  // console.log('@Nodes', node)
+
   const ln = node.nodes.length
   let outputNode
   for (let i = 0 ; i < ln; i++) {

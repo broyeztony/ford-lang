@@ -1,6 +1,6 @@
 const {ForStatement} = require("./ForStatement");
 const {GetId} = require("./../utils");
-const {VariableStatement} = require("./VariableStatement");
+const {ReturnStatement} = require("./ReturnStatement");
 const {Sol_VariableDeclarationStatement} = require("./sol_VariableDeclarationStatement");
 const {Sol_FunctionParameterList} = require("./sol_FunctionParameterList");
 
@@ -12,6 +12,7 @@ function FunctionDeclaration(node, metadata) {
   let outputNode
   for (let i = 0 ; i < lnStatements; i++) {
     const stmtNode = blockStatements[i]
+
     switch (stmtNode.type) {
       case 'VariableStatement':
         outputNode = Sol_VariableDeclarationStatement(stmtNode, metadata)
@@ -21,17 +22,11 @@ function FunctionDeclaration(node, metadata) {
         outputNode = ForStatement(stmtNode, metadata)
         outputNodes.push(outputNode)
         break
+      case 'ReturnStatement':
+        outputNode = ReturnStatement(stmtNode, node, metadata)
+        outputNodes.push(outputNode)
+        break
     }
-  }
-
-  // handle def metadata
-  const meta = lookupMetadata(metadata, node.name.name)
-  let name, stateMutability, visibility
-  if (meta.length > 0) {
-    const [{ n,  s, v }] = meta
-    name = n
-    stateMutability = s
-    visibility = v
   }
 
   const fd = {
@@ -76,19 +71,11 @@ function FunctionDeclaration(node, metadata) {
 
   // handle return parameters
   if (node.returnType) {
-    const returnTypeInput = {
-      name: { name: '', type: 'Identifier' },
-      type: node.returnType
-    }
-    const solFuncReturnParams = Sol_FunctionParameterList([returnTypeInput], metadata)
+    const solFuncReturnParams = Sol_FunctionParameterList([node.returnType], metadata)
     fd.returnParameters = solFuncReturnParams
   }
 
   return fd;
-}
-
-function lookupMetadata(metadata, defName) {
-  return metadata?.defs.filter(_ => _.name === defName)
 }
 
 module.exports = {

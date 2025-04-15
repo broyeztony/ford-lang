@@ -1,6 +1,5 @@
 const { ASTReader, ASTWriter, DefaultASTWriterMapping, LatestCompilerVersion, PrettyFormatter } = require('solc-typed-ast');
 
-
 class Codegen {
 
   constructor() {}

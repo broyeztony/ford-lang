@@ -1,6 +1,17 @@
 const { Tokenizer } = require('./Tokenizer')
 
 const Log = console.log.bind(global)
+const TYPES_IDENTIFIERS = [
+  'u8', 'u16', 'u24', 'u32', 'u40', 'u48', 'u56', 'u64',
+  'u72', 'u80', 'u88', 'u96', 'u104', 'u112', 'u120', 'u128',
+  'u136', 'u144', 'u152', 'u160', 'u168', 'u176', 'u184', 'u192',
+  'u200', 'u208', 'u216', 'u224', 'u232', 'u240', 'u248', 'u256',
+  'i8', 'i16', 'i24', 'i32', 'i40', 'i48', 'i56', 'i64',
+  'i72', 'i80', 'i88', 'i96', 'i104', 'i112', 'i120', 'i128',
+  'i136', 'i144', 'i152', 'i160', 'i168', 'i176', 'i184', 'i192',
+  'i200', 'i208', 'i216', 'i224', 'i232', 'i240', 'i248', 'i256',
+  'string', 'address', 'bool'
+]
 
 class Parser {
 
@@ -73,7 +84,7 @@ class Parser {
         return this.BlockStatement()
       case 'let':
         return this.VariableStatement()
-      case 'return':
+      case 'ARROW':
         return this.ReturnStatement();
       case 'for':
         return this.IterationStatement()
@@ -164,7 +175,14 @@ class Parser {
     let returnType
     if (this._lookahead.type === ':') {
       this._eat(':');
-      returnType = this.Identifier()
+      let ti = this.TypeIdentifier()
+
+      // TODO: data location for return parameters
+      returnType = {
+        name: 'res',
+        type: ti.name,
+        genericType: ti.genericType,
+      }
     }
 
     const body = this.BlockStatement();
@@ -188,8 +206,16 @@ class Parser {
     return buffer;
   }
 
+  /**
+   * TODO: handle `Error: Data location must be "storage", "memory" or "calldata" for parameter in function, but none was given.`
+   */
   DataLocation() {
+
     let dataLocation = 'default'
+    if (this._lookahead.type === 'MULTIPLICATIVE_OPERATOR') {
+      dataLocation = 'memory'
+      this._eat('MULTIPLICATIVE_OPERATOR');
+    }
     if (this._lookahead.type === 'CALLDATA') {
       dataLocation = 'calldata'
       this._eat('CALLDATA');
@@ -209,16 +235,23 @@ class Parser {
   FormalParameterList() {
     const params = []
     do {
+
       // optional data location modifier (`storage`, `calldata` or `memory` as the default)
-      const dataLocation = this.DataLocation()
+      let dataLocation = this.DataLocation()
 
       const paramName = this.Identifier()
       this._eat(':');
-      const paramType = this.Identifier()
+      const paramType = this.TypeIdentifier()
+
+      // TODO: handle more of this 👇🏻
+      if (paramType.name === 'string' && dataLocation === 'default') {
+        dataLocation = 'memory'
+      }
 
       params.push({
-        name: paramName,
-        type: paramType,
+        name: paramName.name,
+        type: paramType.name,
+        genericType: paramType.genericType,
         dataLocation
       })
 
@@ -231,7 +264,7 @@ class Parser {
    * 'return' OptExpression
    */
   ReturnStatement () {
-    this._eat('return');
+    this._eat('ARROW');
     const argument = this._lookahead.type !== ';' ? this.Expression() : null;
     this._eat(';');
     return {
@@ -276,6 +309,7 @@ class Parser {
   }
 
   ForStatementInit() {
+
     if(this._lookahead.type === 'let') {
       return this.VariableStatementInit()
     }
@@ -339,21 +373,38 @@ class Parser {
 
   VariableDeclaration () {
     const id = this.Identifier()
+
+    let varType
+    // if (this._lookahead.type === ':') {
+      this._eat(':');
+      varType = this.TypeIdentifier()
+    // }
+    // else { // TODO: handle case where there is no type identifier and why we want to allow it
+      // In for statement, we want to allow
+      // ```let k = 0 to 10 {}``` (not enforcing to statically type k. In that case it becomes a u256)
+      // varType = {
+        // type: 'TypeIdentifier',
+        // genericType: 'IDENTIFIER',
+        // name: 'u256'
+      // }
+    // }
+
     const initializer = this._lookahead.type !== ';' && this._lookahead.type !== ','
       ? this.VariableInitializer()
       : null
 
-    const errorHandler = this.ErrorHandler();
-
+    // TODO: validate variable type
     const buffer = {
       type: 'VariableDeclaration',
-      id,
+      varName: id.name,
+      varType: varType.name,
+      genericType: varType.genericType,
       initializer,
     }
 
-    if (errorHandler) {
-      buffer.errorHandler = errorHandler
-    }
+    // if (errorHandler) {
+    //   buffer.errorHandler = errorHandler
+    // }
 
     return buffer
   }
@@ -382,7 +433,7 @@ class Parser {
 
   ExpressionStatement () {
     const expression = this.Expression()
-    let errorHandler = this.ErrorHandler()
+    // let errorHandler = this.ErrorHandler()
     this._eat(';')
 
     const buffer = {
@@ -390,22 +441,11 @@ class Parser {
       expression,
     }
 
-    if (errorHandler) {
-      buffer.errorHandler = errorHandler
-    }
+    // if (errorHandler) {
+    //   buffer.errorHandler = errorHandler
+    // }
 
     return buffer
-  }
-
-  ErrorHandler () {
-    if (this._lookahead.type === 'ERROR_HANDLER_OPERATOR') {
-      this._eat('ERROR_HANDLER_OPERATOR')
-      const handler = this.BlockStatement()
-
-      return handler
-    }
-
-    return null;
   }
 
   Expression () {
@@ -481,6 +521,10 @@ class Parser {
       callee,
       arguments: this.Arguments()
     }
+
+    // if (callee.name.indexOf('->') > -1) {
+    //   callee.type = 'mapping'
+    // }
 
     if (this._lookahead.type === '(') {
       callExpression = this._CallExpression(callExpression)
@@ -563,6 +607,29 @@ class Parser {
     return {
       type: 'Identifier',
       name
+    }
+  }
+
+  TypeIdentifier () {
+    const lookaheadType = this._lookahead.type
+    const lookaheadValue = this._lookahead.value
+
+    if (lookaheadType === 'IDENTIFIER') {
+      if (TYPES_IDENTIFIERS.includes(lookaheadValue) === false) {
+        throw new Error(`TypeError: unrecognised type: ${lookaheadValue}`)
+      }
+    }
+    if (
+      lookaheadType === 'IDENTIFIER' ||
+      lookaheadType === 'HASHMAP' ||
+      lookaheadType === 'LIST'
+    ) {
+      const name = this._eat(lookaheadType).value
+      return {
+        type: 'TypeIdentifier',
+        genericType: lookaheadType,
+        name
+      }
     }
   }
 
